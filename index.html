@@ -5751,12 +5751,7 @@
             </div>
             <div class="menu-body">
                                   <div class="menu-section">
-                      <button class="menu-btn menu-btn-primary" onclick="showDashboard()">
-                          📊 Temmuz Dashboard
-                      </button>
-                      <button class="menu-btn menu-btn-primary" onclick="showAugustDashboard()">
-                          📊 Ağustos Dashboard
-                      </button>
+                      <!-- Temmuz ve Ağustos kaldırıldı -->
                       <button class="menu-btn menu-btn-primary" onclick="showSeptemberDashboard()">
                           📊 Eylül Dashboard
                       </button>
@@ -5861,45 +5856,7 @@
             </div>
         </div>
     </div>
-    <!-- Ağustos Dashboard Container -->
-    <div class="dashboard-container" id="augustDashboardContainer" style="display: none;">
-        <div class="header">
-            <div class="header-flex">
-                <div class="header-center">
-                    <h1>Ağustos Performans Dashboard</h1>
-                    <p>Ağustos 2025 Satış Hedefleri ve Gerçekleşen Satışlar</p>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Export Menu -->
-        <div class="module-export-menu" style="position: absolute; top: 20px; right: 20px;">
-            <button class="module-export-btn" onclick="toggleExportMenu('augustExport')">
-                Export
-                <span style="font-size: 0.8em;">▼</span>
-            </button>
-            <div class="module-export-dropdown" id="augustExport">
-                <div class="module-export-item" onclick="exportAugustData('excel')">
-                    <span class="module-export-item-icon">📊</span>
-                    Excel (.xlsx)
-                </div>
-                <div class="module-export-item" onclick="exportAugustData('pdf')">
-                    <span class="module-export-item-icon">📋</span>
-                    PDF Raporu
-                </div>
-            </div>
-        </div>
-        
-        <!-- Ağustos Özet İstatistikler -->
-        <div class="summary-card" id="augustSummaryCard">
-            <div class="summary-stats" id="augustSummaryStats"></div>
-        </div>
-        
-
-        
-        <!-- Ağustos Speedometer Grid -->
-        <div class="speedometer-grid" id="augustSpeedometerGrid"></div>
-    </div>
+    <!-- Ağustos Dashboard Container kaldırıldı -->
 
     <!-- Eylül Dashboard Container -->
     <div class="dashboard-container" id="septemberDashboardContainer" style="display: none;">
@@ -6405,23 +6362,21 @@
         
         // Show/Hide Functions
         function showDashboard() {
-            // Sayfa ilk yüklendiğinde Ağustos dashboard'ını göster
+            // Sayfa ilk yüklendiğinde Eylül dashboard'ını göster
             if (!window.dashboardInitialized) {
                 document.getElementById('dashboardContainer').style.display = 'none';
-                document.getElementById('augustDashboardContainer').style.display = 'block';
+                document.getElementById('septemberDashboardContainer').style.display = 'block';
                 document.getElementById('yearlyDashboardContainer').style.display = 'none';
-                document.getElementById('septemberDashboardContainer').style.display = 'none';
-                window.activeDashboard = 'august';
-                renderAugustDashboard();
+                window.activeDashboard = 'september';
+                renderSeptemberDashboard();
                 window.dashboardInitialized = true;
             } else {
-                // Sonraki çağrılarda Temmuz dashboard'unu göster
-                document.getElementById('dashboardContainer').style.display = 'block';
-                document.getElementById('augustDashboardContainer').style.display = 'none';
-                document.getElementById('septemberDashboardContainer').style.display = 'none';
+                // Sonraki çağrılarda Eylül dashboard'unu göster
+                document.getElementById('dashboardContainer').style.display = 'none';
+                document.getElementById('septemberDashboardContainer').style.display = 'block';
                 document.getElementById('yearlyDashboardContainer').style.display = 'none';
-                window.activeDashboard = 'july';
-                renderDashboard();
+                window.activeDashboard = 'september';
+                renderSeptemberDashboard();
             }
             closeMenu();
         }
@@ -6449,7 +6404,6 @@
         
         function showYearlyDashboard() {
             document.getElementById('dashboardContainer').style.display = 'none';
-            document.getElementById('augustDashboardContainer').style.display = 'none';
             document.getElementById('septemberDashboardContainer').style.display = 'none';
             document.getElementById('yearlyDashboardContainer').style.display = 'block';
             // Yıllık dashboard için activeDashboard'u ayarla
@@ -6460,7 +6414,6 @@
         
         function showJulyCommitment() {
             document.getElementById('dashboardContainer').style.display = 'none';
-            document.getElementById('augustDashboardContainer').style.display = 'none';
             document.getElementById('septemberDashboardContainer').style.display = 'none';
             document.getElementById('pipelineContainer').style.display = 'none';
             document.getElementById('yearlyDashboardContainer').style.display = 'none';
@@ -6473,7 +6426,6 @@
         
         function showStrategicOpportunities() {
             document.getElementById('dashboardContainer').style.display = 'none';
-            document.getElementById('augustDashboardContainer').style.display = 'none';
             document.getElementById('septemberDashboardContainer').style.display = 'none';
             document.getElementById('pipelineContainer').style.display = 'none';
             document.getElementById('yearlyDashboardContainer').style.display = 'none';
@@ -6489,7 +6441,6 @@
         
         function showPipeline() {
             document.getElementById('dashboardContainer').style.display = 'none';
-            document.getElementById('augustDashboardContainer').style.display = 'none';
             document.getElementById('septemberDashboardContainer').style.display = 'none';
             document.getElementById('yearlyDashboardContainer').style.display = 'none';
             document.getElementById('julyCommitmentContainer').style.display = 'none';
