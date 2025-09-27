@@ -12624,24 +12624,9 @@
             }
         }
         
-        // CSS düzeltmesi - Speedometer renkleri için
+        // CSS override kaldırıldı: dinamik SVG gradient'leri kendi ID'leriyle çalışacak
         const style = document.createElement('style');
-        style.textContent = `
-            /* Temmuz dashboard için gradient path'ler */
-            .speedometer-svg path[stroke*="gradient"] {
-                stroke: url(#gradient-FahriAktoz) !important;
-            }
-            
-            /* Ağustos dashboard için gradient path'ler */
-            .speedometer-svg path[stroke*="august-gradient"] {
-                stroke: url(#august-gradient-FahriAktoz) !important;
-            }
-            
-            /* Yıllık dashboard için gradient path'ler */
-            .speedometer-svg path[stroke*="yearly-gradient"] {
-                stroke: url(#yearly-gradient-FahriAktoz) !important;
-            }
-        `;
+        style.textContent = '/* gauge gradient overrides removed to allow dynamic per-card gradients */';
         document.head.appendChild(style);
         
         // Sayfa yüklendiğinde filtre sayılarını güncelle
