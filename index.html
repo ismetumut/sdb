@@ -6326,7 +6326,8 @@
                     console.log('Pipeline data loaded from localStorage:', pipelineData.length, 'records');
                     
                     // Dropdown'ları sadece gerektiğinde doldur
-                    if (!document.getElementById('pipelineSalesRepFilter').children.length > 1) {
+                    const salesRepFilterEl = document.getElementById('pipelineSalesRepFilter');
+                    if (salesRepFilterEl && !(salesRepFilterEl.children.length > 1)) {
                         populatePipelineDropdowns();
                     }
                 } catch (error) {
@@ -6457,7 +6458,8 @@
             renderPipelineMetricsCards();
             
             // Dropdown'ları sadece ilk kez veya gerektiğinde doldur
-            if (!document.getElementById('pipelineSalesRepFilter').children.length > 1) {
+            const salesRepFilterEl2 = document.getElementById('pipelineSalesRepFilter');
+            if (salesRepFilterEl2 && !(salesRepFilterEl2.children.length > 1)) {
                 populatePipelineDropdowns();
             }
         }
@@ -8957,9 +8959,7 @@
             }));
             console.log('LOADED - pipelineData length:', pipelineData.length);
             
-            // Dashboard'u HER ZAMAN render et ve göster
-            renderDashboard();
-            renderYearlyDashboard();
+            // Sadece Eylül dashboard'unu göster
             updateLastUpdated();
             showDashboard();
             
