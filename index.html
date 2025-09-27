@@ -5757,6 +5757,9 @@
                       <button class="menu-btn menu-btn-primary" onclick="showAugustDashboard()">
                           📊 Ağustos Dashboard
                       </button>
+                      <button class="menu-btn menu-btn-primary" onclick="showSeptemberDashboard()">
+                          📊 Eylül Dashboard
+                      </button>
                       <button class="menu-btn menu-btn-primary" onclick="showYearlyDashboard()">
                           📈 Yıllık Dashboard
                       </button>
@@ -5896,6 +5899,44 @@
         
         <!-- Ağustos Speedometer Grid -->
         <div class="speedometer-grid" id="augustSpeedometerGrid"></div>
+    </div>
+
+    <!-- Eylül Dashboard Container -->
+    <div class="dashboard-container" id="septemberDashboardContainer" style="display: none;">
+        <div class="header">
+            <div class="header-flex">
+                <div class="header-center">
+                    <h1>Eylül Performans Dashboard</h1>
+                    <p>Eylül 2025 Satış Hedefleri ve Gerçekleşen Satışlar</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Export Menu -->
+        <div class="module-export-menu" style="position: absolute; top: 20px; right: 20px;">
+            <button class="module-export-btn" onclick="toggleExportMenu('septemberExport')">
+                Export
+                <span style="font-size: 0.8em;">▼</span>
+            </button>
+            <div class="module-export-dropdown" id="septemberExport">
+                <div class="module-export-item" onclick="exportSeptemberData('excel')">
+                    <span class="module-export-item-icon">📊</span>
+                    Excel (.xlsx)
+                </div>
+                <div class="module-export-item" onclick="exportSeptemberData('pdf')">
+                    <span class="module-export-item-icon">📋</span>
+                    PDF Raporu
+                </div>
+            </div>
+        </div>
+
+        <!-- Eylül Özet İstatistikler -->
+        <div class="summary-card" id="septemberSummaryCard">
+            <div class="summary-stats" id="septemberSummaryStats"></div>
+        </div>
+
+        <!-- Eylül Speedometer Grid -->
+        <div class="speedometer-grid" id="septemberSpeedometerGrid"></div>
     </div>
 
     <!-- Yıllık Dashboard Container -->
@@ -6369,6 +6410,7 @@
                 document.getElementById('dashboardContainer').style.display = 'none';
                 document.getElementById('augustDashboardContainer').style.display = 'block';
                 document.getElementById('yearlyDashboardContainer').style.display = 'none';
+                document.getElementById('septemberDashboardContainer').style.display = 'none';
                 window.activeDashboard = 'august';
                 renderAugustDashboard();
                 window.dashboardInitialized = true;
@@ -6376,10 +6418,21 @@
                 // Sonraki çağrılarda Temmuz dashboard'unu göster
                 document.getElementById('dashboardContainer').style.display = 'block';
                 document.getElementById('augustDashboardContainer').style.display = 'none';
+                document.getElementById('septemberDashboardContainer').style.display = 'none';
                 document.getElementById('yearlyDashboardContainer').style.display = 'none';
                 window.activeDashboard = 'july';
                 renderDashboard();
             }
+            closeMenu();
+        }
+
+        function showSeptemberDashboard() {
+            document.getElementById('dashboardContainer').style.display = 'none';
+            document.getElementById('augustDashboardContainer').style.display = 'none';
+            document.getElementById('yearlyDashboardContainer').style.display = 'none';
+            document.getElementById('septemberDashboardContainer').style.display = 'block';
+            window.activeDashboard = 'september';
+            renderSeptemberDashboard();
             closeMenu();
         }
         
@@ -6387,6 +6440,7 @@
             document.getElementById('dashboardContainer').style.display = 'none';
             document.getElementById('augustDashboardContainer').style.display = 'block';
             document.getElementById('yearlyDashboardContainer').style.display = 'none';
+            document.getElementById('septemberDashboardContainer').style.display = 'none';
             // Ağustos dashboard'unun aktif olduğunu işaretle
             window.activeDashboard = 'august';
             renderAugustDashboard();
@@ -6396,6 +6450,7 @@
         function showYearlyDashboard() {
             document.getElementById('dashboardContainer').style.display = 'none';
             document.getElementById('augustDashboardContainer').style.display = 'none';
+            document.getElementById('septemberDashboardContainer').style.display = 'none';
             document.getElementById('yearlyDashboardContainer').style.display = 'block';
             // Yıllık dashboard için activeDashboard'u ayarla
             window.activeDashboard = 'yearly';
@@ -6406,6 +6461,7 @@
         function showJulyCommitment() {
             document.getElementById('dashboardContainer').style.display = 'none';
             document.getElementById('augustDashboardContainer').style.display = 'none';
+            document.getElementById('septemberDashboardContainer').style.display = 'none';
             document.getElementById('pipelineContainer').style.display = 'none';
             document.getElementById('yearlyDashboardContainer').style.display = 'none';
             document.getElementById('julyCommitmentContainer').style.display = 'block';
@@ -6418,6 +6474,7 @@
         function showStrategicOpportunities() {
             document.getElementById('dashboardContainer').style.display = 'none';
             document.getElementById('augustDashboardContainer').style.display = 'none';
+            document.getElementById('septemberDashboardContainer').style.display = 'none';
             document.getElementById('pipelineContainer').style.display = 'none';
             document.getElementById('yearlyDashboardContainer').style.display = 'none';
             document.getElementById('julyCommitmentContainer').style.display = 'none';
@@ -6433,6 +6490,7 @@
         function showPipeline() {
             document.getElementById('dashboardContainer').style.display = 'none';
             document.getElementById('augustDashboardContainer').style.display = 'none';
+            document.getElementById('septemberDashboardContainer').style.display = 'none';
             document.getElementById('yearlyDashboardContainer').style.display = 'none';
             document.getElementById('julyCommitmentContainer').style.display = 'none';
             document.getElementById('pipelineContainer').style.display = 'block';
@@ -8081,9 +8139,10 @@
             
             // Ağustos dashboard için özel SVG oluştur
             let svg;
-            if (window.activeDashboard === 'august') {
+            if (window.activeDashboard === 'august' || window.activeDashboard === 'september') {
                 // Ağustos için gradient ID'yi farklı yap
-                svg = '<svg class="speedometer-svg" viewBox="0 0 280 180"><defs><linearGradient id="august-gradient-' + cleanName + '" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#dc3545;stop-opacity:1" /><stop offset="50%" style="stop-color:#ffc107;stop-opacity:1" /><stop offset="100%" style="stop-color:#28a745;stop-opacity:1" /></linearGradient></defs><path d="M 40 140 A 100 100 0 0 1 240 140" fill="none" stroke="#e9ecef" stroke-width="20" stroke-linecap="round"/><path d="M 40 140 A 100 100 0 0 1 240 140" fill="none" stroke="url(#august-gradient-' + cleanName + ')" stroke-width="20" stroke-linecap="round" stroke-dasharray="' + (percentage > 0 ? (percentage / 100 * 314) : 0) + ' 314"/><g transform="translate(140, 140)"><line x1="0" y1="0" x2="' + needleX + '" y2="' + needleY + '" stroke="#333" stroke-width="3" stroke-linecap="round"/><circle cx="0" cy="0" r="8" fill="#333"/><circle cx="0" cy="0" r="4" fill="white"/></g><text x="140" y="120" text-anchor="middle" font-size="24" font-weight="bold" fill="#333">' + percentage.toFixed(0) + '%</text><g transform="translate(140, 140)"><text x="-75" y="55" text-anchor="middle" font-size="12" fill="#666">0%</text><text x="0" y="-95" text-anchor="middle" font-size="12" fill="#666">50%</text><text x="75" y="55" text-anchor="middle" font-size="12" fill="#666">100%</text><line x1="-70" y1="70" x2="-60" y2="60" stroke="#999" stroke-width="2"/><line x1="70" y1="70" x2="60" y2="60" stroke="#999" stroke-width="2"/></g></svg>';
+                const gradId = (window.activeDashboard === 'september' ? 'september' : 'august') + '-gradient-' + cleanName;
+                svg = '<svg class="speedometer-svg" viewBox="0 0 280 180"><defs><linearGradient id="' + gradId + '" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#dc3545;stop-opacity:1" /><stop offset="50%" style="stop-color:#ffc107;stop-opacity:1" /><stop offset="100%" style="stop-color:#28a745;stop-opacity:1" /></linearGradient></defs><path d="M 40 140 A 100 100 0 0 1 240 140" fill="none" stroke="#e9ecef" stroke-width="20" stroke-linecap="round"/><path d="M 40 140 A 100 100 0 0 1 240 140" fill="none" stroke="url(#' + gradId + ')" stroke-width="20" stroke-linecap="round" stroke-dasharray="' + (percentage > 0 ? (percentage / 100 * 314) : 0) + ' 314"/><g transform="translate(140, 140)"><line x1="0" y1="0" x2="' + needleX + '" y2="' + needleY + '" stroke="#333" stroke-width="3" stroke-linecap="round"/><circle cx="0" cy="0" r="8" fill="#333"/><circle cx="0" cy="0" r="4" fill="white"/></g><text x="140" y="120" text-anchor="middle" font-size="24" font-weight="bold" fill="#333">' + percentage.toFixed(0) + '%</text><g transform="translate(140, 140)"><text x="-75" y="55" text-anchor="middle" font-size="12" fill="#666">0%</text><text x="0" y="-95" text-anchor="middle" font-size="12" fill="#666">50%</text><text x="75" y="55" text-anchor="middle" font-size="12" fill="#666">100%</text><line x1="-70" y1="70" x2="-60" y2="60" stroke="#999" stroke-width="2"/><line x1="70" y1="70" x2="60" y2="60" stroke="#999" stroke-width="2"/></g></svg>';
             } else {
                 // Temmuz için normal SVG
                 svg = '<svg class="speedometer-svg" viewBox="0 0 280 180"><defs><linearGradient id="gradient-' + cleanName + '" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#dc3545;stop-opacity:1" /><stop offset="50%" style="stop-color:#ffc107;stop-opacity:1" /><stop offset="100%" style="stop-color:#28a745;stop-opacity:1" /></linearGradient></defs><path d="M 40 140 A 100 100 0 0 1 240 140" fill="none" stroke="#e9ecef" stroke-width="20" stroke-linecap="round"/><path d="M 40 140 A 100 100 0 0 1 240 140" fill="none" stroke="url(#gradient-' + cleanName + ')" stroke-width="20" stroke-linecap="round" stroke-dasharray="' + (percentage > 0 ? (percentage / 100 * 314) : 0) + ' 314"/><g transform="translate(140, 140)"><line x1="0" y1="0" x2="' + needleX + '" y2="' + needleY + '" stroke="#333" stroke-width="3" stroke-linecap="round"/><circle cx="0" cy="0" r="8" fill="#333"/><circle cx="0" cy="0" r="4" fill="white"/></g><text x="140" y="120" text-anchor="middle" font-size="24" font-weight="bold" fill="#666">' + percentage.toFixed(0) + '%</text><g transform="translate(140, 140)"><text x="-75" y="55" text-anchor="middle" font-size="12" fill="#666">0%</text><text x="0" y="-95" text-anchor="middle" font-size="12" fill="#666">50%</text><text x="75" y="55" text-anchor="middle" font-size="12" fill="#666">100%</text><line x1="-70" y1="70" x2="-60" y2="60" stroke="#999" stroke-width="2"/><line x1="70" y1="70" x2="60" y2="60" stroke="#999" stroke-width="2"/></g></svg>';
@@ -8378,6 +8437,91 @@
             // Drag & Drop fonksiyonlarını ekle
             initializeDragAndDrop('augustSpeedometerGrid');
             renderAugustSummary();
+        }
+
+        function renderSeptemberDashboard() {
+            const grid = document.getElementById('septemberSpeedometerGrid');
+            let html = '';
+
+            // Eylül'de de aynı görünürlük filtresi
+            const visibleData = salesData.filter(person => 
+                person.name !== "Umut Çakıroğlu" && 
+                person.name !== "Ali Altınay" && 
+                !person.isInactive
+            );
+
+            // Görseldeki tablo Eylül ayı satış satırlarını temsil ediyor
+            // Aşağıdaki eylulSalesLines objesi, kişi adını anahtar; ürün ve tutar toplamlarını değer olarak tutar
+            const eylulSalesLines = {
+                "Betül Köse": { netTahsilat: 97458 + 102000, netEkstre: 135000, posRapor: 80000 },
+                "Damla Kalemtaş": { netTahsilat: 120000 + 72000, netEkstre: 25000, posRapor: 0 },
+                "Egehan Öncü": { netTahsilat: 96192 + 250000 + 160000, netEkstre: 39000 + 65000, posRapor: 85000 + 60000 },
+                "Fahri Aktoz": { netTahsilat: 0, netEkstre: 110000, posRapor: 0 },
+                "Güven Gürkan Salıkoç": { netTahsilat: 89500 + 89500 + 100000, netEkstre: 36866, posRapor: 0 },
+                "Hüseyin Çakmak": { netTahsilat: 250000, netEkstre: 33896 + 105000 + 105000, posRapor: 60000 + 33666 + 105000 + 105000 },
+                "Özge Kaçaroğlu": { netTahsilat: 55000, netEkstre: 0, posRapor: 0 },
+                "Sebahat Çay": { netTahsilat: 149944, netEkstre: 50000, posRapor: 50000 },
+                "Tuğçe Bugakaptan": { netTahsilat: 48499 + 200000, netEkstre: 53040 + 55896 + 73093, posRapor: 0 },
+                "Umut Karaerarslan": { netTahsilat: 160000 + 90000 + 96822 + 143896 + 250000 + 339276, netEkstre: 0, posRapor: 0 }
+            };
+
+            // Veriler birleşik tutuluyor
+
+            // Hedefi Eylül için Ağustos hedefiyle aynı tut; veri yoksa 0
+            const septemberData = visibleData.map(person => {
+                const sums = eylulSalesLines[person.name] || { netTahsilat: 0, netEkstre: 0, posRapor: 0 };
+                const actual = (sums.netTahsilat || 0) + (sums.netEkstre || 0) + (sums.posRapor || 0);
+                return {
+                    ...person,
+                    actual: actual,
+                    target: person.septemberTarget || person.augustTarget || person.target || 0,
+                    productSales: {
+                        netTahsilat: sums.netTahsilat || 0,
+                        netEkstre: sums.netEkstre || 0,
+                        posRapor: sums.posRapor || 0,
+                        tos: 0,
+                        onlineDBS: 0,
+                        nap: 0,
+                        unidox: 0
+                    }
+                };
+            });
+
+            // Başarı oranına göre sırala
+            const sortedData = [...septemberData].sort((a, b) => {
+                const aRate = a.target > 0 ? (a.actual / a.target) * 100 : 0;
+                const bRate = b.target > 0 ? (b.actual / b.target) * 100 : 0;
+                return bRate - aRate;
+            });
+
+            for (let i = 0; i < sortedData.length; i++) {
+                const personIndex = salesData.findIndex(p => p.name === sortedData[i].name);
+                html += createSpeedometer(sortedData[i], personIndex);
+            }
+            grid.innerHTML = html;
+
+            // Drag & Drop
+            initializeDragAndDrop('septemberSpeedometerGrid');
+            renderSeptemberSummary(eylulSalesLines);
+        }
+
+        function renderSeptemberSummary(eylulSalesLines) {
+            const visibleData = salesData.filter(person => 
+                person.name !== "Umut Çakıroğlu" && 
+                person.name !== "Ali Altınay" && 
+                !person.isInactive
+            );
+            const totalTarget = visibleData.reduce((sum, person) => sum + (person.septemberTarget || person.augustTarget || person.target || 0), 0);
+            const totalActual = visibleData.reduce((sum, person) => {
+                const sums = eylulSalesLines[person.name] || { netTahsilat: 0, netEkstre: 0, posRapor: 0 };
+                return sum + (sums.netTahsilat + sums.netEkstre + sums.posRapor);
+            }, 0);
+            const successRate = totalTarget > 0 ? (totalActual / totalTarget) * 100 : 0;
+            const totalCount = visibleData.length;
+            const el = document.getElementById('septemberSummaryStats');
+            if (el) {
+                el.innerHTML = '<div class="summary-stat"><h4>Toplam Hedef</h4><div class="value">₺' + totalTarget.toLocaleString('tr-TR') + '</div></div><div class="summary-stat"><h4>Gerçekleşen</h4><div class="value">₺' + totalActual.toLocaleString('tr-TR') + '</div></div><div class="summary-stat"><h4>Başarı Oranı</h4><div class="value">' + successRate.toFixed(0) + '%</div></div><div class="summary-stat"><h4>Satış Yöneticisi</h4><div class="value">' + totalCount + '</div></div>';
+            }
         }
 
         function loadPipelineFromCSV() {
@@ -10550,6 +10694,44 @@
             }));
             
             exportData(data, `Ağustos_Satış_Dashboard_${new Date().toLocaleDateString('tr-TR')}`, format);
+        }
+        
+        // Eylül Dashboard Export Functions
+        function exportSeptemberData(format) {
+            const eylulRows = [];
+            const visibleData = salesData.filter(person => person.name !== 'Umut Çakıroğlu' && person.name !== 'Ali Altınay' && !person.isInactive);
+            const eylulSalesLines = {
+                "Betül Köse": { netTahsilat: 97458 + 102000 + 135000 + 80000, netEkstre: 0, posRapor: 0 },
+                "Damla Kalemtaş": { netTahsilat: 25000 + 120000, netEkstre: 0, posRapor: 0 },
+                "Egehan Öncü": { netTahsilat: 39000 + 96192 + 250000 + 65000, netEkstre: 0, posRapor: 25000 },
+                "Fahri Aktoz": { netTahsilat: 110000, netEkstre: 0, posRapor: 0 },
+                "Güven Gürkan Salıkoç": { netTahsilat: 89500 + 36866, netEkstre: 0, posRapor: 89500 },
+                "Hüseyin Çakmak": { netTahsilat: 60000 + 105000 + 105000, netEkstre: 33896, posRapor: 33666 + 105000 + 105000 },
+                "Özge Kaçaroğlu": { netTahsilat: 55000, netEkstre: 0, posRapor: 0 },
+                "Sebahat Çay": { netTahsilat: 149944, netEkstre: 50000, posRapor: 50000 },
+                "Tuğçe Bugakaptan": { netTahsilat: 55896 + 73093, netEkstre: 0, posRapor: 53040 },
+                "Umut Karaerarslan": { netTahsilat: 160000 + 90000 + 96822 + 143896 + 250000 + 339276, netEkstre: 0, posRapor: 0 }
+            };
+            visibleData.forEach(person => {
+                const sums = eylulSalesLines[person.name] || { netTahsilat: 0, netEkstre: 0, posRapor: 0 };
+                const target = person.septemberTarget || person.augustTarget || person.target || 0;
+                const actual = (sums.netTahsilat || 0) + (sums.netEkstre || 0) + (sums.posRapor || 0);
+                const success = target > 0 ? (actual / target) * 100 : 0;
+                eylulRows.push({
+                    'İsim': person.name,
+                    'Ünvan': person.title,
+                    'Hedef (₺)': target,
+                    'Gerçekleşen (₺)': actual,
+                    'Başarı Oranı (%)': success.toFixed(1),
+                    'Netahsilat (₺)': sums.netTahsilat || 0,
+                    'NetEKstre (₺)': sums.netEkstre || 0,
+                    'PosRapor (₺)': sums.posRapor || 0,
+                    'TÖS (₺)': 0,
+                    'OnlineDBS (₺)': 0,
+                    'NAP360 (₺)': 0
+                });
+            });
+            exportData(eylulRows, `Eylül_Satış_Dashboard_${new Date().toLocaleDateString('tr-TR')}`, format);
         }
         
         // Pipeline Export Functions
