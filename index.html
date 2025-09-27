@@ -7691,7 +7691,7 @@
                 }
             }
         ];
-        const monthNames = ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos'];
+        const monthNames = ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül'];
 
         function getIndicatorClass(value) {
             if (value >= 80) return 'indicator-excellent';
@@ -7870,9 +7870,11 @@
             // Aylık Performans
             modalContent += '<div class="detail-section">';
             modalContent += '<h2 style="font-size: 1.5em; margin-bottom: 18px; display: flex; align-items: center; gap: 10px;">';
-            if (activeDashboard === 'august') {
-                modalContent += '<span style="font-size: 1.2em;">📈</span> Aylık Performans (Ocak - Temmuz)';
+            if (activeDashboard === 'september') {
+                modalContent += '<span style="font-size: 1.2em;">📈</span> Aylık Performans (Ocak - Eylül)';
             } else if (activeDashboard === 'yearly') {
+                modalContent += '<span style="font-size: 1.2em;">📈</span> Aylık Performans (Ocak - Eylül)';
+            } else if (activeDashboard === 'august') {
                 modalContent += '<span style="font-size: 1.2em;">📈</span> Aylık Performans (Ocak - Temmuz)';
             } else {
                 modalContent += '<span style="font-size: 1.2em;">📈</span> Aylık Performans (Ocak - Haziran)';
@@ -7882,8 +7884,11 @@
             modalContent += '<div class="chart-bars">';
             
             let monthlyData;
-            if (activeDashboard === 'august' || activeDashboard === 'yearly') {
-                // Ağustos ve yıllık dashboard'da Temmuz verilerini de dahil et
+            if (activeDashboard === 'september' || activeDashboard === 'yearly') {
+                // Eylül ve yıllık dashboard'da ilk dokuz ayı göster
+                monthlyData = personData.monthlyData.slice(0, 9);
+            } else if (activeDashboard === 'august') {
+                // Ağustos dashboard'unda Temmuz verilerini de dahil et
                 monthlyData = personData.monthlyData.slice(0, 7);
             } else {
                 // Temmuz dashboard'da sadece ilk 6 ay
@@ -8421,6 +8426,42 @@
             "Gizem Güler Ilısu": 450000
         };
 
+        const septemberSalesLines = {
+            "Betül Köse": { netTahsilat: 97458 + 102000, netEkstre: 135000, posRapor: 80000 },
+            "Damla Kalemtaş": { netTahsilat: 120000 + 72000, netEkstre: 25000, posRapor: 0 },
+            "Egehan Öncü": { netTahsilat: 96192 + 250000 + 160000, netEkstre: 39000 + 65000, posRapor: 85000 + 60000 },
+            "Fahri Aktoz": { netTahsilat: 0, netEkstre: 110000, posRapor: 0 },
+            "Güven Gürkan Salıkoç": { netTahsilat: 89500 + 89500 + 100000, netEkstre: 36866, posRapor: 0 },
+            "Hüseyin Çakmak": { netTahsilat: 250000, netEkstre: 33896 + 105000 + 105000, posRapor: 60000 + 33666 + 105000 + 105000 },
+            "Özge Kaçaroğlu": { netTahsilat: 55000, netEkstre: 0, posRapor: 0 },
+            "Sebahat Çay": { netTahsilat: 149944, netEkstre: 50000, posRapor: 50000 },
+            "Tuğçe Bugakaptan": { netTahsilat: 48499 + 200000, netEkstre: 53040 + 55896 + 73093, posRapor: 0 },
+            "Umut Karaerarslan": { netTahsilat: 160000 + 90000 + 96822 + 143896 + 250000 + 339276, netEkstre: 0, posRapor: 0 }
+        };
+
+        updateMonthlyDataWithSeptember();
+
+        function updateMonthlyDataWithSeptember() {
+            const totalMonths = 9;
+            salesData.forEach(person => {
+                if (!Array.isArray(person.monthlyData)) {
+                    person.monthlyData = [];
+                }
+
+                const monthlyData = person.monthlyData;
+                while (monthlyData.length < totalMonths) {
+                    monthlyData.push(0);
+                }
+
+                const septemberTotals = septemberSalesLines[person.name] || { netTahsilat: 0, netEkstre: 0, posRapor: 0 };
+                const septemberSum = (septemberTotals.netTahsilat || 0) +
+                    (septemberTotals.netEkstre || 0) +
+                    (septemberTotals.posRapor || 0);
+
+                monthlyData[8] = septemberSum;
+            });
+        }
+
         function renderSeptemberDashboard() {
             const grid = document.getElementById('septemberSpeedometerGrid');
             let html = '';
@@ -8435,28 +8476,15 @@
             // Hedefler global değişkenden alınır
 
             // Görseldeki tablo Eylül ayı satış satırlarını temsil ediyor
-            // Aşağıdaki eylulSalesLines objesi, kişi adını anahtar; ürün ve tutar toplamlarını değer olarak tutar
-            const eylulSalesLines = {
-                "Betül Köse": { netTahsilat: 97458 + 102000, netEkstre: 135000, posRapor: 80000 },
-                "Damla Kalemtaş": { netTahsilat: 120000 + 72000, netEkstre: 25000, posRapor: 0 },
-                "Egehan Öncü": { netTahsilat: 96192 + 250000 + 160000, netEkstre: 39000 + 65000, posRapor: 85000 + 60000 },
-                "Fahri Aktoz": { netTahsilat: 0, netEkstre: 110000, posRapor: 0 },
-                "Güven Gürkan Salıkoç": { netTahsilat: 89500 + 89500 + 100000, netEkstre: 36866, posRapor: 0 },
-                "Hüseyin Çakmak": { netTahsilat: 250000, netEkstre: 33896 + 105000 + 105000, posRapor: 60000 + 33666 + 105000 + 105000 },
-                "Özge Kaçaroğlu": { netTahsilat: 55000, netEkstre: 0, posRapor: 0 },
-                "Sebahat Çay": { netTahsilat: 149944, netEkstre: 50000, posRapor: 50000 },
-                "Tuğçe Bugakaptan": { netTahsilat: 48499 + 200000, netEkstre: 53040 + 55896 + 73093, posRapor: 0 },
-                "Umut Karaerarslan": { netTahsilat: 160000 + 90000 + 96822 + 143896 + 250000 + 339276, netEkstre: 0, posRapor: 0 }
-            };
-
+            // Global septemberSalesLines objesi, kişi adını anahtar; ürün ve tutar toplamlarını değer olarak tutar
             // Veriler birleşik tutuluyor
 
             // Sadece hedef listesinde olan kişileri göster
             const septemberNameSet = new Set(Object.keys(septemberTargets));
-            const filteredData = visibleData.filter(p => septemberNameSet.has(p.name) || eylulSalesLines[p.name]);
+            const filteredData = visibleData.filter(p => septemberNameSet.has(p.name) || septemberSalesLines[p.name]);
 
             const septemberData = filteredData.map(person => {
-                const sums = eylulSalesLines[person.name] || { netTahsilat: 0, netEkstre: 0, posRapor: 0 };
+                const sums = septemberSalesLines[person.name] || { netTahsilat: 0, netEkstre: 0, posRapor: 0 };
                 const actual = (sums.netTahsilat || 0) + (sums.netEkstre || 0) + (sums.posRapor || 0);
                 return {
                     ...person,
@@ -8489,21 +8517,21 @@
 
             // Drag & Drop
             initializeDragAndDrop('septemberSpeedometerGrid');
-            renderSeptemberSummary(eylulSalesLines);
+            renderSeptemberSummary();
         }
 
-        function renderSeptemberSummary(eylulSalesLines) {
-            const visibleData = salesData.filter(person => 
-                person.name !== "Umut Çakıroğlu" && 
-                person.name !== "Ali Altınay" && 
+        function renderSeptemberSummary() {
+            const visibleData = salesData.filter(person =>
+                person.name !== "Umut Çakıroğlu" &&
+                person.name !== "Ali Altınay" &&
                 !person.isInactive
             );
             const septemberNameSet2 = new Set(Object.keys(septemberTargets));
-            const filteredData2 = visibleData.filter(p => septemberNameSet2.has(p.name) || eylulSalesLines[p.name]);
+            const filteredData2 = visibleData.filter(p => septemberNameSet2.has(p.name) || septemberSalesLines[p.name]);
             // Hedefler global değişkenden alınır
             const totalTarget = filteredData2.reduce((sum, person) => sum + (septemberTargets[person.name] || 0), 0);
             const totalActual = filteredData2.reduce((sum, person) => {
-                const sums = eylulSalesLines[person.name] || { netTahsilat: 0, netEkstre: 0, posRapor: 0 };
+                const sums = septemberSalesLines[person.name] || { netTahsilat: 0, netEkstre: 0, posRapor: 0 };
                 return sum + (sums.netTahsilat + sums.netEkstre + sums.posRapor);
             }, 0);
             const successRate = totalTarget > 0 ? (totalActual / totalTarget) * 100 : 0;
@@ -10688,21 +10716,9 @@
         function exportSeptemberData(format) {
             const eylulRows = [];
             const visibleData = salesData.filter(person => person.name !== 'Umut Çakıroğlu' && person.name !== 'Ali Altınay' && !person.isInactive);
-            const eylulSalesLines = {
-                "Betül Köse": { netTahsilat: 97458 + 102000, netEkstre: 135000, posRapor: 80000 },
-                "Damla Kalemtaş": { netTahsilat: 120000 + 72000, netEkstre: 25000, posRapor: 0 },
-                "Egehan Öncü": { netTahsilat: 96192 + 250000 + 160000, netEkstre: 39000 + 65000, posRapor: 85000 + 60000 },
-                "Fahri Aktoz": { netTahsilat: 0, netEkstre: 110000, posRapor: 0 },
-                "Güven Gürkan Salıkoç": { netTahsilat: 89500 + 89500 + 100000, netEkstre: 36866, posRapor: 0 },
-                "Hüseyin Çakmak": { netTahsilat: 250000, netEkstre: 33896 + 105000 + 105000, posRapor: 60000 + 33666 + 105000 + 105000 },
-                "Özge Kaçaroğlu": { netTahsilat: 55000, netEkstre: 0, posRapor: 0 },
-                "Sebahat Çay": { netTahsilat: 149944, netEkstre: 50000, posRapor: 50000 },
-                "Tuğçe Bugakaptan": { netTahsilat: 48499 + 200000, netEkstre: 53040 + 55896 + 73093, posRapor: 0 },
-                "Umut Karaerarslan": { netTahsilat: 160000 + 90000 + 96822 + 143896 + 250000 + 339276, netEkstre: 0, posRapor: 0 }
-            };
             // Hedefler global değişkenden alınır
             visibleData.forEach(person => {
-                const sums = eylulSalesLines[person.name] || { netTahsilat: 0, netEkstre: 0, posRapor: 0 };
+                const sums = septemberSalesLines[person.name] || { netTahsilat: 0, netEkstre: 0, posRapor: 0 };
                 const target = septemberTargets[person.name] || person.septemberTarget || person.augustTarget || person.target || 0;
                 const actual = (sums.netTahsilat || 0) + (sums.netEkstre || 0) + (sums.posRapor || 0);
                 const success = target > 0 ? (actual / target) * 100 : 0;
@@ -11296,7 +11312,9 @@
                     'Nisan (₺)': person.monthlyData?.[3] || 0,
                     'Mayıs (₺)': person.monthlyData?.[4] || 0,
                     'Haziran (₺)': person.monthlyData?.[5] || 0,
-                    'Temmuz (₺)': person.monthlyData?.[6] || 0
+                    'Temmuz (₺)': person.monthlyData?.[6] || 0,
+                    'Ağustos (₺)': person.monthlyData?.[7] || 0,
+                    'Eylül (₺)': person.monthlyData?.[8] || 0
                 };
             });
             
