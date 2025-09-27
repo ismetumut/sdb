@@ -8492,8 +8492,11 @@
 
             // Veriler birleşik tutuluyor
 
-            // Hedefi Eylül için Ağustos hedefiyle aynı tut; veri yoksa 0
-            const septemberData = visibleData.map(person => {
+            // Sadece hedef listesinde olan kişileri göster
+            const septemberNameSet = new Set(Object.keys(septemberTargets));
+            const filteredData = visibleData.filter(p => septemberNameSet.has(p.name) || eylulSalesLines[p.name]);
+
+            const septemberData = filteredData.map(person => {
                 const sums = eylulSalesLines[person.name] || { netTahsilat: 0, netEkstre: 0, posRapor: 0 };
                 const actual = (sums.netTahsilat || 0) + (sums.netEkstre || 0) + (sums.posRapor || 0);
                 return {
@@ -8536,14 +8539,16 @@
                 person.name !== "Ali Altınay" && 
                 !person.isInactive
             );
+            const septemberNameSet = new Set(Object.keys(septemberTargets));
+            const filteredData = visibleData.filter(p => septemberNameSet.has(p.name) || eylulSalesLines[p.name]);
             // Hedefler global değişkenden alınır
-            const totalTarget = visibleData.reduce((sum, person) => sum + (septemberTargets[person.name] || person.septemberTarget || person.augustTarget || person.target || 0), 0);
-            const totalActual = visibleData.reduce((sum, person) => {
+            const totalTarget = filteredData.reduce((sum, person) => sum + (septemberTargets[person.name] || 0), 0);
+            const totalActual = filteredData.reduce((sum, person) => {
                 const sums = eylulSalesLines[person.name] || { netTahsilat: 0, netEkstre: 0, posRapor: 0 };
                 return sum + (sums.netTahsilat + sums.netEkstre + sums.posRapor);
             }, 0);
             const successRate = totalTarget > 0 ? (totalActual / totalTarget) * 100 : 0;
-            const totalCount = visibleData.length;
+            const totalCount = filteredData.length;
             const el = document.getElementById('septemberSummaryStats');
             if (el) {
                 el.innerHTML = '<div class="summary-stat"><h4>Toplam Hedef</h4><div class="value">₺' + totalTarget.toLocaleString('tr-TR') + '</div></div><div class="summary-stat"><h4>Gerçekleşen</h4><div class="value">₺' + totalActual.toLocaleString('tr-TR') + '</div></div><div class="summary-stat"><h4>Başarı Oranı</h4><div class="value">' + successRate.toFixed(0) + '%</div></div><div class="summary-stat"><h4>Satış Yöneticisi</h4><div class="value">' + totalCount + '</div></div>';
