@@ -6384,17 +6384,27 @@
 
         function showSeptemberDashboard() {
             document.getElementById('dashboardContainer').style.display = 'none';
-            document.getElementById('augustDashboardContainer').style.display = 'none';
+            const augustDashboardContainer = document.getElementById('augustDashboardContainer');
+            if (augustDashboardContainer) {
+                augustDashboardContainer.style.display = 'none';
+            }
             document.getElementById('yearlyDashboardContainer').style.display = 'none';
             document.getElementById('septemberDashboardContainer').style.display = 'block';
             window.activeDashboard = 'september';
             renderSeptemberDashboard();
             closeMenu();
         }
-        
+
         function showAugustDashboard() {
+            const augustDashboardContainer = document.getElementById('augustDashboardContainer');
+            if (!augustDashboardContainer) {
+                console.warn('August dashboard container is not available. Falling back to September dashboard.');
+                showSeptemberDashboard();
+                return;
+            }
+
             document.getElementById('dashboardContainer').style.display = 'none';
-            document.getElementById('augustDashboardContainer').style.display = 'block';
+            augustDashboardContainer.style.display = 'block';
             document.getElementById('yearlyDashboardContainer').style.display = 'none';
             document.getElementById('septemberDashboardContainer').style.display = 'none';
             // Ağustos dashboard'unun aktif olduğunu işaretle
