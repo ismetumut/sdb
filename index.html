@@ -8447,6 +8447,21 @@
             renderAugustSummary();
         }
 
+        // Eylül hedefleri (global)
+        const septemberTargets = {
+            "Betül Köse": 450000,
+            "Damla Kalemtaş": 850000,
+            "Egehan Öncü": 850000,
+            "Fahri Aktoz": 1250000,
+            "Güven Gürkan Salıkoç": 650000,
+            "Hüseyin Çakmak": 1250000,
+            "Özge Kaçaroğlu": 450000,
+            "Sebahat Çay": 1300000,
+            "Tuğçe Bugakaptan": 850000,
+            "Umut Karaerarslan": 850000,
+            "Gizem Güler Ilısu": 450000
+        };
+
         function renderSeptemberDashboard() {
             const grid = document.getElementById('septemberSpeedometerGrid');
             let html = '';
@@ -8458,20 +8473,7 @@
                 !person.isInactive
             );
 
-            // Eylül hedefleri
-            const septemberTargets = {
-                "Betül Köse": 450000,
-                "Damla Kalemtaş": 850000,
-                "Egehan Öncü": 850000,
-                "Fahri Aktoz": 1250000,
-                "Güven Gürkan Salıkoç": 650000,
-                "Hüseyin Çakmak": 1250000,
-                "Özge Kaçaroğlu": 450000,
-                "Sebahat Çay": 1300000,
-                "Tuğçe Bugakaptan": 850000,
-                "Umut Karaerarslan": 850000,
-                "Gizem Güler Ilısu": 450000
-            };
+            // Hedefler global değişkenden alınır
 
             // Görseldeki tablo Eylül ayı satış satırlarını temsil ediyor
             // Aşağıdaki eylulSalesLines objesi, kişi adını anahtar; ürün ve tutar toplamlarını değer olarak tutar
@@ -8534,19 +8536,7 @@
                 person.name !== "Ali Altınay" && 
                 !person.isInactive
             );
-            const septemberTargets = {
-                "Betül Köse": 450000,
-                "Damla Kalemtaş": 850000,
-                "Egehan Öncü": 850000,
-                "Fahri Aktoz": 1250000,
-                "Güven Gürkan Salıkoç": 650000,
-                "Hüseyin Çakmak": 1250000,
-                "Özge Kaçaroğlu": 450000,
-                "Sebahat Çay": 1300000,
-                "Tuğçe Bugakaptan": 850000,
-                "Umut Karaerarslan": 850000,
-                "Gizem Güler Ilısu": 450000
-            };
+            // Hedefler global değişkenden alınır
             const totalTarget = visibleData.reduce((sum, person) => sum + (septemberTargets[person.name] || person.septemberTarget || person.augustTarget || person.target || 0), 0);
             const totalActual = visibleData.reduce((sum, person) => {
                 const sums = eylulSalesLines[person.name] || { netTahsilat: 0, netEkstre: 0, posRapor: 0 };
@@ -10748,19 +10738,7 @@
                 "Tuğçe Bugakaptan": { netTahsilat: 48499 + 200000, netEkstre: 53040 + 55896 + 73093, posRapor: 0 },
                 "Umut Karaerarslan": { netTahsilat: 160000 + 90000 + 96822 + 143896 + 250000 + 339276, netEkstre: 0, posRapor: 0 }
             };
-            const septemberTargets = {
-                "Betül Köse": 450000,
-                "Damla Kalemtaş": 850000,
-                "Egehan Öncü": 850000,
-                "Fahri Aktoz": 1250000,
-                "Güven Gürkan Salıkoç": 650000,
-                "Hüseyin Çakmak": 1250000,
-                "Özge Kaçaroğlu": 450000,
-                "Sebahat Çay": 1300000,
-                "Tuğçe Bugakaptan": 850000,
-                "Umut Karaerarslan": 850000,
-                "Gizem Güler Ilısu": 450000
-            };
+            // Hedefler global değişkenden alınır
             visibleData.forEach(person => {
                 const sums = eylulSalesLines[person.name] || { netTahsilat: 0, netEkstre: 0, posRapor: 0 };
                 const target = septemberTargets[person.name] || person.septemberTarget || person.augustTarget || person.target || 0;
