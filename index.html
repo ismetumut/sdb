@@ -8088,10 +8088,12 @@
             
             const cleanName = data.name.replace(/\s+/g, '').replace(/[^a-zA-Z0-9]/g, '');
             
-            // Aktif dashboard'a özel kırmızı→yeşil gradient (Temmuz/Ağustos/Eylül dahil)
+            // Aktif dashboard'a özel kırmızı→yeşil gradient (id'leri geçmişle uyumlu tut)
             let svg;
             const dash = window.activeDashboard || 'default';
-            const gradId = 'gauge-gradient-' + dash + '-' + cleanName;
+            const gradId = dash === 'yearly' ? ('yearly-gradient-' + cleanName)
+                           : dash === 'august' ? ('august-gradient-' + cleanName)
+                           : ('gradient-' + cleanName);
             svg = '<svg class="speedometer-svg" viewBox="0 0 280 180">'
                 + '<defs>'
                 + '<linearGradient id="' + gradId + '" x1="0%" y1="0%" x2="100%" y2="0%">'
