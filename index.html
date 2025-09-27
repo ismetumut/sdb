@@ -8450,6 +8450,21 @@
                 !person.isInactive
             );
 
+            // Eylül hedefleri
+            const septemberTargets = {
+                "Betül Köse": 450000,
+                "Damla Kalemtaş": 850000,
+                "Egehan Öncü": 850000,
+                "Fahri Aktoz": 1250000,
+                "Güven Gürkan Salıkoç": 650000,
+                "Hüseyin Çakmak": 1250000,
+                "Özge Kaçaroğlu": 450000,
+                "Sebahat Çay": 1300000,
+                "Tuğçe Bugakaptan": 850000,
+                "Umut Karaerarslan": 850000,
+                "Gizem Güler Ilısu": 450000
+            };
+
             // Görseldeki tablo Eylül ayı satış satırlarını temsil ediyor
             // Aşağıdaki eylulSalesLines objesi, kişi adını anahtar; ürün ve tutar toplamlarını değer olarak tutar
             const eylulSalesLines = {
@@ -8474,7 +8489,7 @@
                 return {
                     ...person,
                     actual: actual,
-                    target: person.septemberTarget || person.augustTarget || person.target || 0,
+                    target: septemberTargets[person.name] || person.septemberTarget || person.augustTarget || person.target || 0,
                     productSales: {
                         netTahsilat: sums.netTahsilat || 0,
                         netEkstre: sums.netEkstre || 0,
@@ -8511,7 +8526,20 @@
                 person.name !== "Ali Altınay" && 
                 !person.isInactive
             );
-            const totalTarget = visibleData.reduce((sum, person) => sum + (person.septemberTarget || person.augustTarget || person.target || 0), 0);
+            const septemberTargets = {
+                "Betül Köse": 450000,
+                "Damla Kalemtaş": 850000,
+                "Egehan Öncü": 850000,
+                "Fahri Aktoz": 1250000,
+                "Güven Gürkan Salıkoç": 650000,
+                "Hüseyin Çakmak": 1250000,
+                "Özge Kaçaroğlu": 450000,
+                "Sebahat Çay": 1300000,
+                "Tuğçe Bugakaptan": 850000,
+                "Umut Karaerarslan": 850000,
+                "Gizem Güler Ilısu": 450000
+            };
+            const totalTarget = visibleData.reduce((sum, person) => sum + (septemberTargets[person.name] || person.septemberTarget || person.augustTarget || person.target || 0), 0);
             const totalActual = visibleData.reduce((sum, person) => {
                 const sums = eylulSalesLines[person.name] || { netTahsilat: 0, netEkstre: 0, posRapor: 0 };
                 return sum + (sums.netTahsilat + sums.netEkstre + sums.posRapor);
@@ -10701,20 +10729,33 @@
             const eylulRows = [];
             const visibleData = salesData.filter(person => person.name !== 'Umut Çakıroğlu' && person.name !== 'Ali Altınay' && !person.isInactive);
             const eylulSalesLines = {
-                "Betül Köse": { netTahsilat: 97458 + 102000 + 135000 + 80000, netEkstre: 0, posRapor: 0 },
-                "Damla Kalemtaş": { netTahsilat: 25000 + 120000, netEkstre: 0, posRapor: 0 },
-                "Egehan Öncü": { netTahsilat: 39000 + 96192 + 250000 + 65000, netEkstre: 0, posRapor: 25000 },
-                "Fahri Aktoz": { netTahsilat: 110000, netEkstre: 0, posRapor: 0 },
-                "Güven Gürkan Salıkoç": { netTahsilat: 89500 + 36866, netEkstre: 0, posRapor: 89500 },
-                "Hüseyin Çakmak": { netTahsilat: 60000 + 105000 + 105000, netEkstre: 33896, posRapor: 33666 + 105000 + 105000 },
+                "Betül Köse": { netTahsilat: 97458 + 102000, netEkstre: 135000, posRapor: 80000 },
+                "Damla Kalemtaş": { netTahsilat: 120000 + 72000, netEkstre: 25000, posRapor: 0 },
+                "Egehan Öncü": { netTahsilat: 96192 + 250000 + 160000, netEkstre: 39000 + 65000, posRapor: 85000 + 60000 },
+                "Fahri Aktoz": { netTahsilat: 0, netEkstre: 110000, posRapor: 0 },
+                "Güven Gürkan Salıkoç": { netTahsilat: 89500 + 89500 + 100000, netEkstre: 36866, posRapor: 0 },
+                "Hüseyin Çakmak": { netTahsilat: 250000, netEkstre: 33896 + 105000 + 105000, posRapor: 60000 + 33666 + 105000 + 105000 },
                 "Özge Kaçaroğlu": { netTahsilat: 55000, netEkstre: 0, posRapor: 0 },
                 "Sebahat Çay": { netTahsilat: 149944, netEkstre: 50000, posRapor: 50000 },
-                "Tuğçe Bugakaptan": { netTahsilat: 55896 + 73093, netEkstre: 0, posRapor: 53040 },
+                "Tuğçe Bugakaptan": { netTahsilat: 48499 + 200000, netEkstre: 53040 + 55896 + 73093, posRapor: 0 },
                 "Umut Karaerarslan": { netTahsilat: 160000 + 90000 + 96822 + 143896 + 250000 + 339276, netEkstre: 0, posRapor: 0 }
+            };
+            const septemberTargets = {
+                "Betül Köse": 450000,
+                "Damla Kalemtaş": 850000,
+                "Egehan Öncü": 850000,
+                "Fahri Aktoz": 1250000,
+                "Güven Gürkan Salıkoç": 650000,
+                "Hüseyin Çakmak": 1250000,
+                "Özge Kaçaroğlu": 450000,
+                "Sebahat Çay": 1300000,
+                "Tuğçe Bugakaptan": 850000,
+                "Umut Karaerarslan": 850000,
+                "Gizem Güler Ilısu": 450000
             };
             visibleData.forEach(person => {
                 const sums = eylulSalesLines[person.name] || { netTahsilat: 0, netEkstre: 0, posRapor: 0 };
-                const target = person.septemberTarget || person.augustTarget || person.target || 0;
+                const target = septemberTargets[person.name] || person.septemberTarget || person.augustTarget || person.target || 0;
                 const actual = (sums.netTahsilat || 0) + (sums.netEkstre || 0) + (sums.posRapor || 0);
                 const success = target > 0 ? (actual / target) * 100 : 0;
                 eylulRows.push({
