@@ -1000,21 +1000,31 @@
       document.getElementById('yearTotalsTable').innerHTML = rows;
     }
 
+    // Centralized view hider to prevent overlapping screens
+    function hideAllViews(){
+      const ids = [
+        'septemberDashboardContainer',
+        'monthDashboardContainer',
+        'yearDashboardContainer',
+        'reportsContainer',
+        'productReportsContainer',
+        'leadReportsContainer',
+        'salesContainer'
+      ];
+      ids.forEach(id=>{ const el = document.getElementById(id); if (el) el.style.display = 'none'; });
+    }
+
     function showYear(){
+      hideAllViews();
       renderYearDashboard();
-      document.getElementById('septemberDashboardContainer').style.display = 'none';
-      document.getElementById('monthDashboardContainer').style.display = 'none';
       document.getElementById('yearDashboardContainer').style.display = 'block';
       setActiveMenu('yillik');
       closeMenu();
     }
 
     function showSeptember(){
+      hideAllViews();
       document.getElementById('septemberDashboardContainer').style.display = 'block';
-      document.getElementById('monthDashboardContainer').style.display = 'none';
-      const y = document.getElementById('yearDashboardContainer'); if (y) y.style.display = 'none';
-      const r = document.getElementById('reportsContainer'); if (r) r.style.display = 'none';
-      const pr = document.getElementById('productReportsContainer'); if (pr) pr.style.display = 'none';
       setActiveMenu('eylul');
       closeMenu();
     }
@@ -1053,61 +1063,39 @@
       const display = sorted.filter(p => !(p.manager || p.title === 'Direktör' || p.role === 'Direktör'));
       grid.innerHTML = display.map(createSpeedometer).join('');
       renderMonthSummary(sorted);
-      // show month, hide september
-      document.getElementById('septemberDashboardContainer').style.display = 'none';
+      hideAllViews();
       document.getElementById('monthDashboardContainer').style.display = 'block';
-      const y = document.getElementById('yearDashboardContainer'); if (y) y.style.display = 'none';
-      const r = document.getElementById('reportsContainer'); if (r) r.style.display = 'none';
-      const pr = document.getElementById('productReportsContainer'); if (pr) pr.style.display = 'none';
       setActiveMenu(key);
       closeMenu();
     }
 
     function showReports(){
+      hideAllViews();
       renderMonthlyTrend();
-      document.getElementById('septemberDashboardContainer').style.display = 'none';
-      document.getElementById('monthDashboardContainer').style.display = 'none';
-      const y = document.getElementById('yearDashboardContainer'); if (y) y.style.display = 'none';
       document.getElementById('reportsContainer').style.display = 'block';
-      const pr = document.getElementById('productReportsContainer'); if (pr) pr.style.display = 'none';
-      const lr = document.getElementById('leadReportsContainer'); if (lr) lr.style.display = 'none';
       setActiveMenu('rapor-ayet');
       closeMenu();
     }
 
     function showProductReport(){
+      hideAllViews();
       renderProductReport();
-      document.getElementById('septemberDashboardContainer').style.display = 'none';
-      document.getElementById('monthDashboardContainer').style.display = 'none';
-      const y = document.getElementById('yearDashboardContainer'); if (y) y.style.display = 'none';
-      const r = document.getElementById('reportsContainer'); if (r) r.style.display = 'none';
       document.getElementById('productReportsContainer').style.display = 'block';
-      const lr = document.getElementById('leadReportsContainer'); if (lr) lr.style.display = 'none';
       setActiveMenu('rapor-urun');
       closeMenu();
     }
 
     function showLeadReport(){
+      hideAllViews();
       renderLeadReport();
-      document.getElementById('septemberDashboardContainer').style.display = 'none';
-      document.getElementById('monthDashboardContainer').style.display = 'none';
-      const y = document.getElementById('yearDashboardContainer'); if (y) y.style.display = 'none';
-      const r = document.getElementById('reportsContainer'); if (r) r.style.display = 'none';
-      const pr = document.getElementById('productReportsContainer'); if (pr) pr.style.display = 'none';
       document.getElementById('leadReportsContainer').style.display = 'block';
-      const sc = document.getElementById('salesContainer'); if (sc) sc.style.display = 'none';
       setActiveMenu('rapor-lead');
       closeMenu();
     }
 
     function showSales(){
+      hideAllViews();
       renderSales();
-      document.getElementById('septemberDashboardContainer').style.display = 'none';
-      document.getElementById('monthDashboardContainer').style.display = 'none';
-      const y = document.getElementById('yearDashboardContainer'); if (y) y.style.display = 'none';
-      const r = document.getElementById('reportsContainer'); if (r) r.style.display = 'none';
-      const pr = document.getElementById('productReportsContainer'); if (pr) pr.style.display = 'none';
-      const lr = document.getElementById('leadReportsContainer'); if (lr) lr.style.display = 'none';
       document.getElementById('salesContainer').style.display = 'block';
       setActiveMenu('satislar');
       closeMenu();
