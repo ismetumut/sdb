@@ -152,46 +152,39 @@
     }
 
     /* Hamburger Menu */
-    .hamburger-menu {
-      position: fixed;
-      top: 16px;
-      left: 16px;
-      z-index: 1001;
-    }
+    .hamburger-menu { position: fixed; top: 16px; left: 16px; z-index: 1001; }
     .hamburger-btn {
-      background: #ffffff;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: saturate(140%) blur(6px);
       border: 1px solid #e5e7eb;
-      border-radius: 10px;
-      width: 48px;
-      height: 48px;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-      transition: transform 0.2s ease;
+      border-radius: 12px;
+      width: 52px; height: 52px; cursor: pointer;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
-    .hamburger-btn:hover { transform: scale(1.04); }
+    .hamburger-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(0,0,0,0.16); }
     .hamburger-line {
       width: 22px; height: 2px; background: #374151; border-radius: 2px;
     }
 
-    .menu-overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.45); display: none; z-index: 1000;
-      backdrop-filter: blur(3px);
-    }
+    .menu-overlay { position: fixed; inset: 0; background: rgba(15,23,42,0.45); display: none; z-index: 1000; backdrop-filter: blur(4px); }
     .menu-content {
-      position: fixed; top: 0; left: -320px; width: 300px; height: 100vh; background: #ffffff; z-index: 1002;
-      box-shadow: 8px 0 24px rgba(0,0,0,0.12); padding: 16px; transition: left 0.25s ease;
-      display: flex; flex-direction: column;
+      position: fixed; top: 0; left: -340px; width: 320px; height: 100vh; background: #ffffff; z-index: 1002;
+      box-shadow: 10px 0 28px rgba(0,0,0,0.14); padding: 16px 14px; transition: left 0.28s ease;
+      display: flex; flex-direction: column; border-right: 1px solid #eef2f7;
     }
     .menu-content.active { left: 0; }
-    .menu-header { font-weight: 700; color: #111827; margin-bottom: 12px; font-size: 1.1rem; }
-    .menu-section { display: grid; gap: 8px; }
-    .menu-btn { padding: 10px 12px; border-radius: 10px; border: 1px solid #e5e7eb; background: #f9fafb; cursor: pointer; text-align: left; }
-    .menu-btn:hover { background: #eef2ff; border-color: #c7d2fe; }
+    .menu-header { font-weight: 800; color: #111827; margin: 4px 8px 14px; font-size: 1.1rem; letter-spacing: .2px; }
+    .menu-section { display: grid; gap: 10px; }
+    .menu-btn {
+      padding: 12px 14px; border-radius: 12px; border: 1px solid #eef2f7; background: linear-gradient(180deg, #fbfbfc 0%, #f4f6fb 100%);
+      cursor: pointer; text-align: left; color: #111827; font-weight: 600; display:flex; align-items:center; justify-content:space-between;
+      font-size: 1rem;
+      transition: background .2s ease, border-color .2s ease, transform .15s ease;
+    }
+    .menu-btn:hover { background: #eef2ff; border-color: #c7d2fe; transform: translateX(2px); }
+    .menu-btn.active { background: #e0e7ff; border-color: #a5b4fc; box-shadow: inset 0 0 0 2px #c7d2fe; }
 
     /* Month Dashboard (Ocak–Ağustos) */
     .month-container { max-width: 1400px; margin: 0 auto; display: none; }
@@ -200,6 +193,43 @@
     .name-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
     .name-card { background: white; border: 1px solid #e5e7eb; border-radius: 12px; padding: 14px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
     .name-card.manager { background: #f3f4f6; color: #6b7280; border-color: #e5e7eb; }
+
+    /* Detail Modal */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.45); display:none; z-index: 2000; }
+    .modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: min(920px, 92vw); max-height: 80vh; overflow:auto; background:#fff; border:1px solid #e5e7eb; border-radius:14px; box-shadow: 0 20px 40px rgba(0,0,0,0.16); display:none; z-index: 2001; }
+    .modal-header { display:flex; justify-content:space-between; align-items:center; padding:14px 16px; border-bottom:1px solid #f1f5f9; }
+    .modal-title { font-weight:700; color:#111827; }
+    .modal-close { border:0; background:transparent; font-size:18px; cursor:pointer; color:#6b7280; }
+    .modal-body { padding:12px 16px 18px; }
+    .table { width:100%; border-collapse: collapse; }
+    .table th, .table td { padding:10px 8px; border-bottom:1px solid #eef2f7; text-align:right; }
+    .table th:first-child, .table td:first-child { text-align:left; }
+    .pill { display:inline-block; padding:4px 8px; border-radius:999px; background:#f3f4f6; color:#374151; font-size:12px; }
+    /* Reports */
+    .report-container { max-width: 1200px; margin: 0 auto; display:none; }
+    .report-header { text-align:center; margin: 12px 0 16px; }
+    .chart-card { background:#fff; border:1px solid #e5e7eb; border-radius:16px; padding:16px; box-shadow:0 8px 24px rgba(0,0,0,0.08); }
+    .chart-legend { display:flex; gap:14px; align-items:center; justify-content:center; margin-top:8px; color:#374151; }
+    .legend-item { display:flex; align-items:center; gap:6px; }
+    .legend-dot { width:12px; height:12px; border-radius:999px; display:inline-block; }
+    .report-toolbar { display:flex; gap:8px; justify-content:center; align-items:center; margin-bottom:10px; }
+    .select { padding:6px 10px; border:1px solid #e5e7eb; border-radius:8px; background:#fff; }
+    /* Product report */
+    .product-summary-grid { display:grid; grid-template-columns: repeat(6, minmax(160px, 1fr)); gap:12px; }
+    .product-card { background:#fff; border:1px solid #e5e7eb; border-radius:12px; padding:12px; box-shadow:0 4px 12px rgba(0,0,0,0.06); text-align:center; display:flex; flex-direction:column; align-items:center; }
+    .product-card .title { font-weight:700; color:#111827; margin-bottom:4px; }
+    .product-card .sub { color:#6b7280; font-size:12px; }
+    .bar { height:8px; background:#eef2f7; border-radius:999px; overflow:hidden; margin-top:8px; }
+    .bar-fill { height:100%; border-radius:999px; }
+    .product-card .pct { font-weight:800; font-size:20px; color:#111827; }
+    .product-card .val-line { color:#374151; font-size:13px; margin-top:2px; }
+    .month-pies { display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:14px; margin-top:12px; }
+    .month-pie-card { background:#fff; border:1px solid #e5e7eb; border-radius:12px; padding:12px; text-align:center; box-shadow:0 4px 12px rgba(0,0,0,0.06); }
+    .month-title { font-weight:600; color:#111827; font-size:14px; margin-bottom:6px; }
+    .mini-cards { display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap:8px; margin-top:8px; }
+    .mini-card { border:1px solid #eef2f7; border-radius:10px; padding:8px; text-align:left; }
+    .mini-card .name { display:flex; align-items:center; gap:6px; font-weight:600; font-size:12px; color:#111827; }
+    .mini-card .val { color:#374151; font-size:12px; margin-top:4px; }
   </style>
 </head>
 <body>
@@ -210,6 +240,49 @@
       <div class="hamburger-line"></div>
       <div class="hamburger-line"></div>
     </button>
+  </div>
+
+  <!-- Reports: Product Breakdown -->
+  <div class="report-container" id="productReportsContainer" style="display:none;">
+    <div class="report-header">
+      <h2>Ürün Bazlı Kırılım</h2>
+      <p style="color:#6b7280;margin:6px 0 0;">Üstte yıllık dağılım kutucukları • Altta her ay için pasta grafik</p>
+    </div>
+    <div class="chart-card" style="margin-bottom:12px;">
+      <div class="report-toolbar" style="justify-content:center;">
+        <div style="font-weight:600;color:#374151;">Yıllık Ürün Dağılımı</div>
+      </div>
+      <div class="product-summary-grid" id="productSummaryGrid"></div>
+    </div>
+    <div class="chart-card">
+      <div class="month-pies" id="monthPiesGrid"></div>
+    </div>
+  </div>
+
+  <!-- Reports: Monthly Trend -->
+  <div class="report-container" id="reportsContainer">
+    <div class="report-header">
+      <h2>Aylık Trend</h2>
+      <p style="color:#6b7280;margin:6px 0 0;">Hedef vs Gerçekleşen (Ocak–Eylül)</p>
+    </div>
+    <div class="chart-card">
+      <div id="monthlyTrendChart"></div>
+      <div class="chart-legend">
+        <div class="legend-item"><span class="legend-dot" style="background:#3b82f6;"></span><span>Hedef</span></div>
+        <div class="legend-item"><span class="legend-dot" style="background:#10b981;"></span><span>Gerçekleşen</span></div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Detail Modal -->
+  <div id="detailOverlay" class="modal-overlay" onclick="closeDetail()"></div>
+  <div id="detailModal" class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="detailTitle">Detay</div>
+      <button class="modal-close" onclick="closeDetail()">✕</button>
+    </div>
+    <div class="modal-body" id="detailBody"></div>
   </div>
 
   <!-- Year Dashboard -->
@@ -235,16 +308,19 @@
   <div class="menu-content" id="menuContent">
     <div class="menu-header">Dashboard Menü</div>
     <div class="menu-section">
-      <button class="menu-btn" onclick="showSeptember()">Eylül Dashboard</button>
-      <button class="menu-btn" onclick="showYear()">Yıllık Dashboard</button>
-      <button class="menu-btn" onclick="showMonth('ocak')">Ocak Dashboard</button>
-      <button class="menu-btn" onclick="showMonth('subat')">Şubat Dashboard</button>
-      <button class="menu-btn" onclick="showMonth('mart')">Mart Dashboard</button>
-      <button class="menu-btn" onclick="showMonth('nisan')">Nisan Dashboard</button>
-      <button class="menu-btn" onclick="showMonth('mayis')">Mayıs Dashboard</button>
-      <button class="menu-btn" onclick="showMonth('haziran')">Haziran Dashboard</button>
-      <button class="menu-btn" onclick="showMonth('temmuz')">Temmuz Dashboard</button>
-      <button class="menu-btn" onclick="showMonth('agustos')">Ağustos Dashboard</button>
+      <button class="menu-btn" data-view="yillik" onclick="showYear()">Yıllık Dashboard</button>
+      <button class="menu-btn" data-view="eylul" onclick="showSeptember()">Eylül Dashboard</button>
+      <button class="menu-btn" data-view="ocak" onclick="showMonth('ocak')">Ocak Dashboard</button>
+      <button class="menu-btn" data-view="subat" onclick="showMonth('subat')">Şubat Dashboard</button>
+      <button class="menu-btn" data-view="mart" onclick="showMonth('mart')">Mart Dashboard</button>
+      <button class="menu-btn" data-view="nisan" onclick="showMonth('nisan')">Nisan Dashboard</button>
+      <button class="menu-btn" data-view="mayis" onclick="showMonth('mayis')">Mayıs Dashboard</button>
+      <button class="menu-btn" data-view="haziran" onclick="showMonth('haziran')">Haziran Dashboard</button>
+      <button class="menu-btn" data-view="temmuz" onclick="showMonth('temmuz')">Temmuz Dashboard</button>
+      <button class="menu-btn" data-view="agustos" onclick="showMonth('agustos')">Ağustos Dashboard</button>
+      <div class="menu-header" style="margin-top:10px;">Raporlar</div>
+      <button class="menu-btn" data-view="rapor-ayet" onclick="showReports()">Aylık Trend</button>
+      <button class="menu-btn" data-view="rapor-urun" onclick="showProductReport()">Ürün Bazlı Kırılım</button>
     </div>
   </div>
   <div class="dashboard-container" id="septemberDashboardContainer">
@@ -380,7 +456,7 @@
       const cardExtraClass = isLeader ? ' leader' : '';
       const successText = showBadge ? `${percentage.toFixed(0)}%` : '—';
       return `
-        <div class="speedometer-card${data.manager ? ' manager' : ''}${data.inactive ? ' inactive' : ''}${cardExtraClass}${noTitleClass}">
+        <div class="speedometer-card${data.manager ? ' manager' : ''}${data.inactive ? ' inactive' : ''}${cardExtraClass}${noTitleClass}" data-name="${data.name}">
           ${showBadge ? `<div class=\"achievement-badge ${badgeClass}\">${badgeText}</div>` : ''}
           <div class="card-header">
             <h3>${data.name}</h3>
@@ -443,6 +519,14 @@
       const content = document.getElementById('menuContent');
       overlay.style.display = 'none';
       content.classList.remove('active');
+    }
+
+    // Highlight active menu item
+    function setActiveMenu(view){
+      const buttons = document.querySelectorAll('#menuContent .menu-btn');
+      buttons.forEach(b=> b.classList.remove('active'));
+      const target = document.querySelector(`#menuContent .menu-btn[data-view="${view}"]`);
+      if (target) target.classList.add('active');
     }
 
     const monthLabels = {
@@ -626,7 +710,8 @@
     function normalizeName(name){
       const map = {
         'Güven Gürkan Salıkoç': 'Güven Salıkoç',
-        'Muhammed Masum Sivaslıgil': 'Muhammed Sivaslıgil'
+        'Muhammed Masum Sivaslıgil': 'Muhammed Sivaslıgil',
+        'Gizem Güler Ilısu': 'Gizem Ilısu'
       };
       return map[name] || name;
     }
@@ -695,6 +780,77 @@
         </div>`;
     }
 
+    // Lead kaynağı kırılım veri seti (kişilere sırayla eklenecek)
+    const leadBreakdown = {
+      'Ali Altınay': {
+        columns: ['Dış talep','İş Ortağı','Mevcut Müşteri','Satış Geliştirme','Şirket'],
+        values: [201180,150000,28000,200000,318182]
+      },
+      'Batuhan Arısüt': {
+        columns: ['Dış talep','İş Ortağı','Mevcut Müşteri','Satış Geliştirme','Şirket'],
+        values: [81450,0,0,74320,158450]
+      }
+    };
+
+    function currency(n){ return '₺' + (n||0).toLocaleString('tr-TR'); }
+    function slugifyName(s){
+      if (!s) return '';
+      // Türkçe karakterler için sadeleştirme ve boşluk/simge temizleme
+      const map = { 'Ç':'C','Ö':'O','Ş':'S','İ':'I','I':'I','Ü':'U','Ğ':'G','ç':'c','ö':'o','ş':'s','ı':'i','i':'i','ü':'u','ğ':'g' };
+      const replaced = s.split('').map(ch => map[ch] || ch).join('');
+      return replaced.toLowerCase().replace(/\s+/g,'').replace(/[^a-z0-9]/g,'');
+    }
+
+    // leadBreakdown için hızlı arama indeksi oluştur
+    const leadIndex = (()=>{
+      const idx = new Map();
+      Object.keys(leadBreakdown).forEach(k => {
+        const key = slugifyName(normalizeName(k));
+        idx.set(key, k);
+      });
+      return idx;
+    })();
+
+    function openDetail(name){
+      const modal = document.getElementById('detailModal');
+      const overlay = document.getElementById('detailOverlay');
+      document.getElementById('detailTitle').textContent = name + ' — Lead Kaynağı Bazlı Kırılım';
+      const key = slugifyName(normalizeName((name || '').trim()));
+      const original = leadIndex.get(key);
+      let data = original ? leadBreakdown[original] : undefined;
+      // Fallback: sayfa yenilenmeden eklenen girdiler için doğrudan isimle de dene
+      if (!data) data = leadBreakdown[name];
+      if (!data) data = leadBreakdown[normalizeName(name)];
+      const body = document.getElementById('detailBody');
+      if (!data){
+        body.innerHTML = `<div style="color:#6b7280">Bu kişi için detay henüz girilmedi.</div>`;
+      } else {
+        const total = (data.values || []).reduce((s,n)=> s + (n||0), 0);
+        const rows = data.columns.map((c, i)=> {
+          const v = data.values[i] || 0;
+          const pct = total > 0 ? ((v/total)*100).toFixed(1) + '%' : '—';
+          return `<tr><td>${c}</td><td>${currency(v)}</td><td style="color:#6b7280;">${pct}</td></tr>`;
+        }).join('');
+        body.innerHTML = `
+          <div style="margin-bottom:10px;"><span class="pill">Lead Kaynağı Bazlı Kırılım</span></div>
+          <table class="table">
+            <thead><tr><th>Kaynak</th><th>Tutar</th><th>Pay</th></tr></thead>
+            <tbody>${rows}</tbody>
+            <tfoot><tr><th style="text-align:left;">Toplam</th><th>${currency(total)}</th><th></th></tr></tfoot>
+          </table>
+        `;
+      }
+      overlay.style.display = 'block';
+      modal.style.display = 'block';
+    }
+
+    function closeDetail(){
+      const modal = document.getElementById('detailModal');
+      const overlay = document.getElementById('detailOverlay');
+      modal.style.display = 'none';
+      overlay.style.display = 'none';
+    }
+
     function renderYearDashboard(){
       const list = aggregateYearData();
       const sorted = [...list].sort((a,b)=>{
@@ -704,7 +860,14 @@
       });
       // Hide leader cards from the grid but keep them in totals
       const display = sorted.filter(p => !(p.manager || p.title === 'Direktör' || p.role === 'Direktör') && !hiddenNames.includes(p.name));
-      document.getElementById('yearSpeedometerGrid').innerHTML = display.map(createSpeedometer).join('');
+      const grid = document.getElementById('yearSpeedometerGrid');
+      grid.innerHTML = display.map(createSpeedometer).join('');
+      // Click to open detail
+      grid.querySelectorAll('.speedometer-card').forEach(card => {
+        const name = card.getAttribute('data-name');
+        card.style.cursor = 'pointer';
+        card.addEventListener('click', ()=> openDetail(name));
+      });
       renderYearSummary(sorted);
 
       // Render audit table for quick validation
@@ -724,6 +887,7 @@
       document.getElementById('septemberDashboardContainer').style.display = 'none';
       document.getElementById('monthDashboardContainer').style.display = 'none';
       document.getElementById('yearDashboardContainer').style.display = 'block';
+      setActiveMenu('yillik');
       closeMenu();
     }
 
@@ -731,6 +895,9 @@
       document.getElementById('septemberDashboardContainer').style.display = 'block';
       document.getElementById('monthDashboardContainer').style.display = 'none';
       const y = document.getElementById('yearDashboardContainer'); if (y) y.style.display = 'none';
+      const r = document.getElementById('reportsContainer'); if (r) r.style.display = 'none';
+      const pr = document.getElementById('productReportsContainer'); if (pr) pr.style.display = 'none';
+      setActiveMenu('eylul');
       closeMenu();
     }
 
@@ -772,8 +939,248 @@
       document.getElementById('septemberDashboardContainer').style.display = 'none';
       document.getElementById('monthDashboardContainer').style.display = 'block';
       const y = document.getElementById('yearDashboardContainer'); if (y) y.style.display = 'none';
+      const r = document.getElementById('reportsContainer'); if (r) r.style.display = 'none';
+      const pr = document.getElementById('productReportsContainer'); if (pr) pr.style.display = 'none';
+      setActiveMenu(key);
       closeMenu();
     }
+
+    function showReports(){
+      renderMonthlyTrend();
+      document.getElementById('septemberDashboardContainer').style.display = 'none';
+      document.getElementById('monthDashboardContainer').style.display = 'none';
+      const y = document.getElementById('yearDashboardContainer'); if (y) y.style.display = 'none';
+      document.getElementById('reportsContainer').style.display = 'block';
+      const pr = document.getElementById('productReportsContainer'); if (pr) pr.style.display = 'none';
+      setActiveMenu('rapor-ayet');
+      closeMenu();
+    }
+
+    function showProductReport(){
+      renderProductReport();
+      document.getElementById('septemberDashboardContainer').style.display = 'none';
+      document.getElementById('monthDashboardContainer').style.display = 'none';
+      const y = document.getElementById('yearDashboardContainer'); if (y) y.style.display = 'none';
+      const r = document.getElementById('reportsContainer'); if (r) r.style.display = 'none';
+      document.getElementById('productReportsContainer').style.display = 'block';
+      setActiveMenu('rapor-urun');
+      closeMenu();
+    }
+
+    // ===== Product Breakdown Data (template) =====
+    const products = ['DBS','NAP','Netahsilat','Netekstre','PosRapor','TÖS'];
+    const productColors = {
+      'DBS':'#6366f1','NAP':'#f59e0b','Netahsilat':'#10b981','Netekstre':'#3b82f6','PosRapor':'#ef4444','TÖS':'#8b5cf6'
+    };
+    const productBreakdown = {
+      ocak:   { DBS:0,      NAP:60000, Netahsilat:1958651, Netekstre:709402,  PosRapor:273900, TÖS:157050 },
+      subat:  { DBS:0,      NAP:0,     Netahsilat:3157741, Netekstre:660180,  PosRapor:60000,  TÖS:40000  },
+      mart:   { DBS:465000, NAP:0,     Netahsilat:3007563, Netekstre:1193917, PosRapor:277648, TÖS:430000 },
+      nisan:  { DBS:210000, NAP:0,     Netahsilat:3102359, Netekstre:1430398, PosRapor:374666, TÖS:150936 },
+      mayis:  { DBS:0,      NAP:0,     Netahsilat:1702488, Netekstre:1014707, PosRapor:387125, TÖS:214000 },
+      haziran:{ DBS:319620, NAP:0,     Netahsilat:2081052, Netekstre:1805726, PosRapor:683686, TÖS:207060 },
+      temmuz: { DBS:290000, NAP:0,     Netahsilat:3072119, Netekstre:1576085, PosRapor:294318, TÖS:76000  },
+      agustos:{ DBS:0,      NAP:61000, Netahsilat:2188069, Netekstre:1447500, PosRapor:416340, TÖS:508000 },
+      eylul:  { DBS:0,      NAP:0,     Netahsilat:2590087, Netekstre:1181791, PosRapor:578666, TÖS:0      }
+    };
+    // Eylül için Netahsilat/Netekstre/PosRapor elimizde var; üstten gelen tabloya göre TÖS/DBS/NAP'ı da ekledik.
+    // Netahsilat/Netekstre/PosRapor'ı eylül satış satırlarından hesaplayalım (kişiler toplamı):
+    // Eylül değerleri görsel ile uyumlu olacak şekilde doğrudan set edildi.
+
+    function sumVals(obj){ return products.reduce((s,p)=> s + (obj[p]||0), 0); }
+    function pct(val, total){ return total>0 ? (val/total*100) : 0; }
+    function polar(cx, cy, r, ang){ const a = (ang-90) * Math.PI/180; return [cx + r*Math.cos(a), cy + r*Math.sin(a)]; }
+
+    function computeYearTotals(){
+      const months = ['ocak','subat','mart','nisan','mayis','haziran','temmuz','agustos','eylul'];
+      const totals = {};
+      products.forEach(p=> totals[p]=0);
+      months.forEach(m=>{
+        const row = productBreakdown[m]||{};
+        products.forEach(p=> totals[p]+= (row[p]||0));
+      });
+      const grand = Object.values(totals).reduce((s,n)=> s+n, 0);
+      return { totals, grand };
+    }
+
+    function renderProductSummary(){
+      const { totals, grand } = computeYearTotals();
+      const sorted = products
+        .map(p => ({ name: p, val: totals[p] || 0 }))
+        .sort((a, b) => b.val - a.val);
+      const items = sorted.map(({name, val})=>{
+        const share = grand>0? (val/grand*100):0;
+        return `<div class="product-card">
+          <div class="title" style="display:flex;align-items:center;gap:6px;"><span class="legend-dot" style="background:${productColors[name]}"></span>${name}</div>
+          <div class="pct">%${share.toFixed(1)}</div>
+          <div class="val-line">₺${(val||0).toLocaleString('tr-TR')}</div>
+        </div>`;
+      }).join('');
+      document.getElementById('productSummaryGrid').innerHTML = items;
+    }
+
+    function renderPieSVG(map){
+      const entries = products.map(p=>({ name:p, val: map[p]||0, color:productColors[p] })).filter(e=> e.val>0);
+      const total = entries.reduce((s,e)=> s+e.val, 0) || 1;
+      const W=220,H=220,cx=110,cy=110,rOut=84,rIn=50; let acc=0; const arcs=[]; const labels=[];
+      entries.forEach(e=>{
+        const angle = (e.val/total)*360; const start=acc, end=acc+angle; acc=end;
+        const [x1,y1] = polar(cx,cy,rOut,start);
+        const [x2,y2] = polar(cx,cy,rOut,end);
+        const [xi,yi] = polar(cx,cy,rIn,end);
+        const [xj,yj] = polar(cx,cy,rIn,start);
+        const large = angle>180 ? 1:0;
+        const d = `M ${x1} ${y1} A ${rOut} ${rOut} 0 ${large} 1 ${x2} ${y2} L ${xi} ${yi} A ${rIn} ${rIn} 0 ${large} 0 ${xj} ${yj} Z`;
+        arcs.push(`<path d="${d}" fill="${e.color}" opacity="0.95"></path>`);
+        // percentage label in slice (skip tiny slices < 5%)
+        const share = (e.val/total)*100;
+        if (share >= 5){
+          const mid = (start+end)/2; const rMid = (rIn + rOut)/2; const [lx,ly] = polar(cx,cy,rMid,mid);
+          labels.push(`<text x="${lx}" y="${ly}" text-anchor="middle" dominant-baseline="middle" font-size="11" fill="#ffffff" font-weight="700">%${share.toFixed(0)}</text>`);
+        }
+      });
+      return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto">${arcs.join('')}${labels.join('')}</svg>`;
+    }
+
+    function renderMonthlyPies(){
+      const keys=['ocak','subat','mart','nisan','mayis','haziran','temmuz','agustos','eylul'];
+      const labels=['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül'];
+      const cards = keys.map((k,i)=>{
+        const map = productBreakdown[k]||{};
+        const mini = products.map(p=>{
+          const v = map[p]||0; if (!v) return '';
+          return `<div class="mini-card"><div class="name"><span class="legend-dot" style="background:${productColors[p]}"></span>${p}</div><div class="val">₺${v.toLocaleString('tr-TR')}</div></div>`;
+        }).join('');
+        return `<div class="month-pie-card">
+          <div class="month-title">${labels[i]}</div>
+          ${renderPieSVG(map)}
+          <div class="mini-cards">${mini}</div>
+        </div>`;
+      }).join('');
+      document.getElementById('monthPiesGrid').innerHTML = cards;
+    }
+
+    function renderProductReport(){
+      renderProductSummary();
+      renderMonthlyPies();
+    }
+
+    function toggleProductDataEditor(){
+      const el = document.getElementById('productDataEditor');
+      el.style.display = (el.style.display==='none' || !el.style.display) ? 'block' : 'none';
+    }
+
+    function importProductCSV(){
+      const txt = document.getElementById('productCSV').value.trim();
+      if (!txt) return;
+      const lines = txt.split(/\r?\n/);
+      const headers = lines[0].split(',').map(h=>h.trim());
+      const idx = {
+        product: headers.findIndex(h=>/product/i.test(h)),
+        ocak: headers.findIndex(h=>/ocak/i.test(h)),
+        subat: headers.findIndex(h=>/subat|şubat|subat/i.test(h)),
+        mart: headers.findIndex(h=>/mart/i.test(h)),
+        nisan: headers.findIndex(h=>/nisan/i.test(h)),
+        mayis: headers.findIndex(h=>/mayis|mayıs/i.test(h)),
+        haziran: headers.findIndex(h=>/haziran/i.test(h)),
+        temmuz: headers.findIndex(h=>/temmuz/i.test(h)),
+        agustos: headers.findIndex(h=>/agustos|ağustos/i.test(h)),
+        eylul: headers.findIndex(h=>/eylul|eylül/i.test(h))
+      };
+      function toNum(s){ const n = Number((s||'').toString().replace(/[^0-9.-]/g,'')); return isNaN(n)?0:n; }
+      for (let i=1;i<lines.length;i++){
+        const cols = lines[i].split(','); if (!cols.length) continue;
+        const p = (cols[idx.product]||'').trim(); if (!p) continue;
+        if (!products.includes(p)) continue;
+        productBreakdown.ocak[p] = toNum(cols[idx.ocak]);
+        productBreakdown.subat[p] = toNum(cols[idx.subat]);
+        productBreakdown.mart[p] = toNum(cols[idx.mart]);
+        productBreakdown.nisan[p] = toNum(cols[idx.nisan]);
+        productBreakdown.mayis[p] = toNum(cols[idx.mayis]);
+        productBreakdown.haziran[p] = toNum(cols[idx.haziran]);
+        productBreakdown.temmuz[p] = toNum(cols[idx.temmuz]);
+        productBreakdown.agustos[p] = toNum(cols[idx.agustos]);
+        productBreakdown.eylul[p] = toNum(cols[idx.eylul]);
+      }
+      renderProductReport();
+    }
+
+    // Compute monthly totals from monthPeople and September data
+    function computeMonthlyTotals(){
+      const keys = ['ocak','subat','mart','nisan','mayis','haziran','temmuz','agustos'];
+      const labels = ['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül'];
+      const target = [];
+      const actual = [];
+      for (const k of keys){
+        const list = monthPeople[k] || [];
+        const t = list.reduce((s,p)=> s + (p.target||0), 0);
+        const a = list.reduce((s,p)=> s + (p.actual||0), 0);
+        target.push(t); actual.push(a);
+      }
+      // September
+      const sepT = Object.values(septemberTargets).reduce((s,v)=> s + (v||0), 0);
+      const sepA = Object.values(eylulSalesLines).reduce((sums, v)=> sums + (v.netTahsilat||0) + (v.netEkstre||0) + (v.posRapor||0), 0);
+      target.push(sepT); actual.push(sepA);
+      return { labels, target, actual };
+    }
+
+    function formatCompact(n){
+      const v = n||0;
+      if (v >= 1_000_000) return (v/1_000_000).toFixed(2).replace('.', ',') + 'M';
+      if (v >= 1_000) return (v/1_000).toFixed(0) + 'K';
+      return v.toLocaleString('tr-TR');
+    }
+
+    // Render a grouped bar chart (responsive)
+    function renderMonthlyTrend(){
+      const { labels, target, actual } = computeMonthlyTotals();
+      const maxVal = Math.max(...target, ...actual, 1);
+      const W = 900, H = 360, P = 48; // width, height, padding
+      const n = labels.length;
+      const bandW = (W - P*2) / n;           // each month band width
+      const barW = Math.min(22, bandW/3);    // single bar width
+      function scaleY(v){ return H - P - (v / maxVal) * (H - P*2); }
+      const bars = [];
+      const pctLabels = [];
+      for (let i=0; i<n; i++){
+        const xCenter = P + bandW*i + bandW/2;
+        const tH = (maxVal>0)? ( (target[i]/maxVal) * (H - P*2) ) : 0;
+        const aH = (maxVal>0)? ( (actual[i]/maxVal) * (H - P*2) ) : 0;
+        const tX = xCenter - barW - 3;
+        const aX = xCenter + 3;
+        const tY = H - P - tH;
+        const aY = H - P - aH;
+        bars.push(`<rect x="${tX}" y="${tY}" width="${barW}" height="${tH}" fill="#3b82f6" rx="4"/>`);
+        bars.push(`<rect x="${aX}" y="${aY}" width="${barW}" height="${aH}" fill="#10b981" rx="4"/>`);
+        // value labels rotated inside bars
+        const tCX = tX + barW/2, tCY = tY + tH/2;
+        const aCX = aX + barW/2, aCY = aY + aH/2;
+        bars.push(`<text x="${tCX}" y="${tCY}" transform="rotate(-90 ${tCX} ${tCY})" text-anchor="middle" dominant-baseline="middle" font-size="11" fill="#ffffff">${formatCompact(target[i]||0)}</text>`);
+        bars.push(`<text x="${aCX}" y="${aCY}" transform="rotate(-90 ${aCX} ${aCY})" text-anchor="middle" dominant-baseline="middle" font-size="11" fill="#ffffff">${formatCompact(actual[i]||0)}</text>`);
+
+        // percentage label above month (H/G)
+        const pct = (target[i]||0) > 0 ? (actual[i]/target[i]*100) : 0;
+        pctLabels.push(`<text x="${xCenter}" y="${P - 14}" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">%${pct.toFixed(0)}</text>`);
+      }
+      const xLabels = labels.map((lb,i)=> {
+        const x = P + bandW*i + bandW/2;
+        return `<text x="${x}" y="${H - 12}" text-anchor="middle" font-size="12" fill="#6b7280">${lb}</text>`;
+      }).join('');
+      const gridY = [0.25,0.5,0.75,1].map(fr=>{
+        const y = scaleY(maxVal*fr);
+        return `<line x1="${P}" y1="${y}" x2="${W-P}" y2="${y}" stroke="#eef2f7" stroke-dasharray="4 4"/>`;
+      }).join('');
+
+      const svg = `
+        <svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto">
+          <rect x="${P}" y="${P}" width="${W-P*2}" height="${H-P*2}" fill="#fff" stroke="#e5e7eb"/>
+          ${pctLabels.join('')}
+          ${gridY}
+          ${bars.join('')}
+          ${xLabels}
+        </svg>`;
+      document.getElementById('monthlyTrendChart').innerHTML = svg;
+    }
   </script>
-</body>
-</html>
+ </body>
+ </html>
