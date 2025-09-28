@@ -173,6 +173,7 @@
       position: fixed; top: 0; left: -340px; width: 320px; height: 100vh; background: #ffffff; z-index: 1002;
       box-shadow: 10px 0 28px rgba(0,0,0,0.14); padding: 16px 14px; transition: left 0.28s ease;
       display: flex; flex-direction: column; border-right: 1px solid #eef2f7;
+      overflow-y: auto; -webkit-overflow-scrolling: touch;
     }
     .menu-content.active { left: 0; }
     .menu-header { font-weight: 800; color: #111827; margin: 4px 8px 14px; font-size: 1.1rem; letter-spacing: .2px; }
@@ -230,6 +231,12 @@
     .mini-card { border:1px solid #eef2f7; border-radius:10px; padding:8px; text-align:left; }
     .mini-card .name { display:flex; align-items:center; gap:6px; font-weight:600; font-size:12px; color:#111827; }
     .mini-card .val { color:#374151; font-size:12px; margin-top:4px; }
+    /* Lead Source report */
+    .lead-summary-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap:12px; }
+    .lead-card { background:#fff; border:1px solid #e5e7eb; border-radius:12px; padding:12px; text-align:center; box-shadow:0 4px 12px rgba(0,0,0,0.06); }
+    .lead-card .title { font-weight:700; color:#111827; margin-bottom:4px; }
+    .lead-card .pct { font-weight:800; font-size:20px; color:#111827; }
+    .lead-card .val { color:#374151; font-size:13px; margin-top:2px; }
   </style>
 </head>
 <body>
@@ -240,6 +247,20 @@
       <div class="hamburger-line"></div>
       <div class="hamburger-line"></div>
     </button>
+  </div>
+
+  <!-- Reports: Lead Source Breakdown -->
+  <div class="report-container" id="leadReportsContainer" style="display:none;">
+    <div class="report-header">
+      <h2>Lead Kaynağı Bazlı Kırılım</h2>
+      <p style="color:#6b7280;margin:6px 0 0;">Üstte yıllık kaynak dağılımı • Altta ay bazında pasta grafikler</p>
+    </div>
+    <div class="chart-card" style="margin-bottom:12px;">
+      <div class="lead-summary-grid" id="leadSummaryGrid"></div>
+    </div>
+    <div class="chart-card">
+      <div class="month-pies" id="leadMonthPiesGrid"></div>
+    </div>
   </div>
 
   <!-- Reports: Product Breakdown -->
@@ -321,6 +342,7 @@
       <div class="menu-header" style="margin-top:10px;">Raporlar</div>
       <button class="menu-btn" data-view="rapor-ayet" onclick="showReports()">Aylık Trend</button>
       <button class="menu-btn" data-view="rapor-urun" onclick="showProductReport()">Ürün Bazlı Kırılım</button>
+      <button class="menu-btn" data-view="rapor-lead" onclick="showLeadReport()">Lead Kaynağı Bazlı Kırılım</button>
     </div>
   </div>
   <div class="dashboard-container" id="septemberDashboardContainer">
@@ -952,6 +974,7 @@
       const y = document.getElementById('yearDashboardContainer'); if (y) y.style.display = 'none';
       document.getElementById('reportsContainer').style.display = 'block';
       const pr = document.getElementById('productReportsContainer'); if (pr) pr.style.display = 'none';
+      const lr = document.getElementById('leadReportsContainer'); if (lr) lr.style.display = 'none';
       setActiveMenu('rapor-ayet');
       closeMenu();
     }
@@ -963,8 +986,93 @@
       const y = document.getElementById('yearDashboardContainer'); if (y) y.style.display = 'none';
       const r = document.getElementById('reportsContainer'); if (r) r.style.display = 'none';
       document.getElementById('productReportsContainer').style.display = 'block';
+      const lr = document.getElementById('leadReportsContainer'); if (lr) lr.style.display = 'none';
       setActiveMenu('rapor-urun');
       closeMenu();
+    }
+
+    function showLeadReport(){
+      renderLeadReport();
+      document.getElementById('septemberDashboardContainer').style.display = 'none';
+      document.getElementById('monthDashboardContainer').style.display = 'none';
+      const y = document.getElementById('yearDashboardContainer'); if (y) y.style.display = 'none';
+      const r = document.getElementById('reportsContainer'); if (r) r.style.display = 'none';
+      const pr = document.getElementById('productReportsContainer'); if (pr) pr.style.display = 'none';
+      document.getElementById('leadReportsContainer').style.display = 'block';
+      setActiveMenu('rapor-lead');
+      closeMenu();
+    }
+
+    // ===== Lead Source Data (reuse sources from leadBreakdown columns) =====
+    const leadSources = ['Dış talep','İş Ortağı','Mevcut Müşteri','Satış Geliştirme','Şirket'];
+    const leadColors = {
+      'Dış talep':'#3b82f6', 'İş Ortağı':'#f59e0b', 'Mevcut Müşteri':'#10b981', 'Satış Geliştirme':'#8b5cf6', 'Şirket':'#ef4444'
+    };
+    // Ay bazlı lead kaynağı toplamları (şablon). İstersen rakamları ver; şimdilik 0'lar ürün toplamlarıyla orantılanmıyor.
+    const leadMonthly = {
+      ocak:   {'Dış talep':1028249,'İş Ortağı':358000,'Mevcut Müşteri':734510,'Satış Geliştirme':303072,'Şirket':735172},
+      subat:  {'Dış talep':1836833,'İş Ortağı':110000,'Mevcut Müşteri':1166200,'Satış Geliştirme':684140,'Şirket':120748},
+      mart:   {'Dış talep':927261,'İş Ortağı':140000,'Mevcut Müşteri':2467848,'Satış Geliştirme':1426675,'Şirket':412344},
+      nisan:  {'Dış talep':2545206,'İş Ortağı':385000,'Mevcut Müşteri':1651580,'Satış Geliştirme':922841,'Şirket':183732},
+      mayis:  {'Dış talep':1113592,'İş Ortağı':562000,'Mevcut Müşteri':871296,'Satış Geliştirme':606132,'Şirket':165300},
+      haziran:{'Dış talep':1512108,'İş Ortağı':271200,'Mevcut Müşteri':1498126,'Satış Geliştirme':1294670,'Şirket':521040},
+      temmuz: {'Dış talep':3060974,'İş Ortağı':359140,'Mevcut Müşteri':817380,'Satış Geliştirme':881926,'Şirket':250102},
+      agustos:{'Dış talep':2343369,'İş Ortağı':615000,'Mevcut Müşteri':756140,'Satış Geliştirme':845400,'Şirket':0},
+      eylul:  {'Dış talep':1545785,'İş Ortağı':638458,'Mevcut Müşteri':865840,'Satış Geliştirme':711185,'Şirket':589276}
+    };
+
+    function leadSum(obj){ return leadSources.reduce((s,k)=> s + (obj[k]||0), 0); }
+    function renderLeadPie(map){
+      const entries = leadSources.map(n=>({name:n, val: map[n]||0, color: leadColors[n]})).filter(e=> e.val>0);
+      const total = entries.reduce((s,e)=> s+e.val, 0) || 1;
+      const W=220,H=220,cx=110,cy=110,rOut=84,rIn=50; let acc=0; const arcs=[]; const labels=[];
+      entries.forEach(e=>{
+        const angle = (e.val/total)*360; const start=acc, end=acc+angle; acc=end;
+        function polar(cx, cy, r, ang){ const a=(ang-90)*Math.PI/180; return [cx+r*Math.cos(a), cy+r*Math.sin(a)]; }
+        const [x1,y1] = polar(cx,cy,rOut,start);
+        const [x2,y2] = polar(cx,cy,rOut,end);
+        const [xi,yi] = polar(cx,cy,rIn,end);
+        const [xj,yj] = polar(cx,cy,rIn,start);
+        const large = angle>180 ? 1:0;
+        const d = `M ${x1} ${y1} A ${rOut} ${rOut} 0 ${large} 1 ${x2} ${y2} L ${xi} ${yi} A ${rIn} ${rIn} 0 ${large} 0 ${xj} ${yj} Z`;
+        arcs.push(`<path d="${d}" fill="${e.color}" opacity="0.95"></path>`);
+        const share=(e.val/total)*100; if (share>=6){ const mid=(start+end)/2; const rMid=(rIn+rOut)/2; const [lx,ly]=polar(cx,cy,rMid,mid); labels.push(`<text x="${lx}" y="${ly}" text-anchor="middle" dominant-baseline="middle" font-size="11" fill="#fff" font-weight="700">%${share.toFixed(0)}</text>`);}        
+      });
+      return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto">${arcs.join('')}${labels.join('')}</svg>`;
+    }
+
+    function computeLeadYearTotals(){
+      const months=['ocak','subat','mart','nisan','mayis','haziran','temmuz','agustos','eylul'];
+      const totals={}; leadSources.forEach(s=> totals[s]=0);
+      months.forEach(m=>{ const row=leadMonthly[m]||{}; leadSources.forEach(s=> totals[s]+= (row[s]||0)); });
+      const grand = Object.values(totals).reduce((s,n)=> s+n, 0);
+      return { totals, grand };
+    }
+
+    function renderLeadSummary(){
+      const { totals, grand } = computeLeadYearTotals();
+      const sorted = leadSources.map(n=>({name:n, val: totals[n]||0})).sort((a,b)=> b.val-a.val);
+      const items = sorted.map(({name,val})=>{
+        const share = grand>0 ? (val/grand*100) : 0;
+        return `<div class=\"lead-card\"><div class=\"title\">${name}</div><div class=\"pct\">%${share.toFixed(1)}</div><div class=\"val\">₺${(val||0).toLocaleString('tr-TR')}</div></div>`;
+      }).join('');
+      document.getElementById('leadSummaryGrid').innerHTML = items;
+    }
+
+    function renderLeadMonthlyPies(){
+      const keys=['ocak','subat','mart','nisan','mayis','haziran','temmuz','agustos','eylul'];
+      const labels=['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül'];
+      const cards = keys.map((k,i)=>{
+        const map = leadMonthly[k] || {};
+        const mini = leadSources.map(s=>{ const v=map[s]||0; if (!v) return ''; return `<div class=\"mini-card\"><div class=\"name\"><span class=\"legend-dot\" style=\"background:${leadColors[s]}\"></span>${s}</div><div class=\"val\">₺${v.toLocaleString('tr-TR')}</div></div>`;}).join('');
+        return `<div class=\"month-pie-card\"><div class=\"month-title\">${labels[i]}</div>${renderLeadPie(map)}<div class=\"mini-cards\">${mini}</div></div>`;
+      }).join('');
+      document.getElementById('leadMonthPiesGrid').innerHTML = cards;
+    }
+
+    function renderLeadReport(){
+      renderLeadSummary();
+      renderLeadMonthlyPies();
     }
 
     // ===== Product Breakdown Data (template) =====
