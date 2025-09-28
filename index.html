@@ -222,7 +222,7 @@
       <div class="summary-stats" id="yearSummaryStats"></div>
     </div>
     <div class="speedometer-grid" id="yearSpeedometerGrid"></div>
-    <div class="summary-card" style="margin-top:16px;">
+    <div class="summary-card" style="margin-top:16px; display:none;">
       <div class="summary-stats" style="display:block;">
         <div class="summary-item" style="grid-column: 1/-1;">
           <div class="label" style="margin-bottom:10px;">Kişi Bazlı Yıllık Toplamlar (Denetim)</div>
@@ -303,14 +303,29 @@
       "Gizem Güler Ilısu": { netTahsilat: 0, netEkstre: 0, posRapor: 0 }
     };
 
-    // Kartlara temel veri modeli
+    // Kartlara temel veri modeli (Eylül itibarıyla güncel unvanlar)
+    const septemberTitles = {
+      'Betül Köse': 'Kıdemli Uzman',
+      'Damla Kalemtaş': 'Müdür Yardımcısı',
+      'Egehan Öncü': 'Müdür Yardımcısı',
+      'Fahri Aktoz': 'Müdür',
+      'Güven Gürkan Salıkoç': 'Kıdemli Uzman',
+      'Hüseyin Çakmak': 'Müdür',
+      'Özge Kaçaroğlu': 'Kıdemli Uzman',
+      'Sebahat Çay': 'Kıdemli Müdür (Bölge Müdürü)',
+      'Tuğçe Bugakaptan': 'Müdür Yardımcısı',
+      'Umut Karaerarslan': 'Müdür Yardımcısı',
+      'Gizem Güler Ilısu': 'Kıdemli Uzman'
+    };
+
     const people = Object.keys(septemberTargets).map(name => {
       const target = septemberTargets[name] || 0;
       const sums = eylulSalesLines[name] || { netTahsilat: 0, netEkstre: 0, posRapor: 0 };
       const actual = (sums.netTahsilat || 0) + (sums.netEkstre || 0) + (sums.posRapor || 0);
+      const title = septemberTitles[name] || '';
       return {
         name,
-        title: '',
+        title,
         target,
         actual
       };
